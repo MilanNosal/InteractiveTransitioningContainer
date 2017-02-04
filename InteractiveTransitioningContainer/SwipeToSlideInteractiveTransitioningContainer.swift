@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SwipeToSlideInteractiveTransitioningContainer: InteractiveTransitioningContainer {
+public class SwipeToSlideInteractiveTransitioningContainer: InteractiveTransitioningContainer {
     
     // MARK: Delegate fields
     let animator = SwipeToSlideTransitionAnimation()
@@ -24,7 +24,7 @@ class SwipeToSlideInteractiveTransitioningContainer: InteractiveTransitioningCon
     // MARK: Instance fields
     let viewControllers: [UIViewController]
     
-    init(with viewControllers: [UIViewController]) {
+    public init(with viewControllers: [UIViewController]) {
         
         guard viewControllers.count > 0 else {
             fatalError("SwipeToSlideInteractiveTransitioningContainerDelegate has to be initiated with at least one viewController.")
@@ -35,7 +35,7 @@ class SwipeToSlideInteractiveTransitioningContainer: InteractiveTransitioningCon
         super.init(nibName: nil, bundle: nil)
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -43,7 +43,7 @@ class SwipeToSlideInteractiveTransitioningContainer: InteractiveTransitioningCon
 
 extension SwipeToSlideInteractiveTransitioningContainer {
     
-    override func loadView() {
+    override public func loadView() {
         super.loadView()
         
         interactionController = SwipeToSlidePanGestureInteractiveTransition(in: self.containerView) {
@@ -70,14 +70,14 @@ extension SwipeToSlideInteractiveTransitioningContainer {
 
 extension SwipeToSlideInteractiveTransitioningContainer: InteractiveTransitioningContainerDelegate {
     
-    func initialViewController(
+    public func initialViewController(
         interactiveTransitioningContainer: InteractiveTransitioningContainer) -> UIViewController {
         
         return viewControllers.first!
         
     }
     
-    func interactiveTransitioningContainer(
+    public func interactiveTransitioningContainer(
         interactiveTransitioningContainer: InteractiveTransitioningContainer,
         animationControllerForTransitionFrom fromViewController: UIViewController,
         to toViewController: UIViewController) -> UIViewControllerAnimatedTransitioning {
@@ -86,7 +86,7 @@ extension SwipeToSlideInteractiveTransitioningContainer: InteractiveTransitionin
         
     }
     
-    func interactiveTransitioningContainer(
+    public func interactiveTransitioningContainer(
         interactiveTransitioningContainer: InteractiveTransitioningContainer,
         animationPositionsForTransitionFrom fromViewController: UIViewController,
         to toViewController: UIViewController) -> InteractiveTransitioningContainerAnimationPositions {
@@ -107,7 +107,7 @@ extension SwipeToSlideInteractiveTransitioningContainer: InteractiveTransitionin
         
     }
     
-    func interactiveTransitioningContainer(
+    public func interactiveTransitioningContainer(
         interactiveTransitioningContainer: InteractiveTransitioningContainer,
         interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         

@@ -10,12 +10,13 @@ import UIKit
 
 /// Skeleton container taking care of transition lifecycle
 /// Use the delegate to customize it (see example in SwipeToSlideContainer)
-class InteractiveTransitioningContainer: UIViewController {
+public class InteractiveTransitioningContainer: UIViewController {
     
     /// Delegate is used for managing all the custom behavior - without the delegate the container
     /// itself is responsible for calling the initial transit, plus all transitions will be forced 
     /// to be non-animated (animator has to be fed using the delegate)
-    weak var delegate: InteractiveTransitioningContainerDelegate?
+    /// Be careful, the reference is weak
+    public weak var delegate: InteractiveTransitioningContainerDelegate?
     
     fileprivate(set) var selectedViewController: UIViewController?
     
@@ -24,7 +25,7 @@ class InteractiveTransitioningContainer: UIViewController {
     
     /// It is the responsibility of the subclass to call transit in viewDidLoad override in order
     /// to present the initial view
-    func transit(to viewController: UIViewController, animated: Bool = true) {
+    public func transit(to viewController: UIViewController, animated: Bool = true) {
         
         self.transit(from: selectedViewController, to: viewController, animated: animated)
         
@@ -35,7 +36,7 @@ class InteractiveTransitioningContainer: UIViewController {
 // MARK: Initialization
 extension InteractiveTransitioningContainer {
     
-    override func loadView() {
+    public override func loadView() {
         
         super.loadView()
         
@@ -64,7 +65,7 @@ extension InteractiveTransitioningContainer {
         
     }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         if let delegate = delegate {
@@ -193,15 +194,15 @@ extension InteractiveTransitioningContainer {
 // MARK: status bar overrides - it delegates status bar appearance to child VC
 extension InteractiveTransitioningContainer {
     
-    override var prefersStatusBarHidden: Bool {
+    public override var prefersStatusBarHidden: Bool {
         return self.selectedViewController?.prefersStatusBarHidden ?? false
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
+    public override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.selectedViewController?.preferredStatusBarStyle ?? .default
     }
     
-    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+    public override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
         return self.selectedViewController?.preferredStatusBarUpdateAnimation ?? .fade
     }
 }

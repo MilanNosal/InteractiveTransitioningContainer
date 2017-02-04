@@ -13,10 +13,16 @@ import Foundation
 //
 // Credits also to Alek Akstrom
 // - http://www.iosnomad.com/blog/2014/5/12/interactive-custom-container-view-controller-transitions
-class InteractiveTransitionContainerPercentDrivenInteractiveTransition: NSObject, UIViewControllerInteractiveTransitioning {
+public class InteractiveTransitionContainerPercentDrivenInteractiveTransition: NSObject, UIViewControllerInteractiveTransitioning {
+    
+    public enum State {
+        case isInactive
+        case isInteracting
+        case isInTearDown
+    }
     
     // MARK: UIPercentDrivenInteractiveTransition fields
-    var completionCurve: UIViewAnimationCurve = .linear
+    public var completionCurve: UIViewAnimationCurve = .linear
     
     // Duration is delegated to the animator
     var duration: CGFloat {
@@ -53,10 +59,8 @@ class InteractiveTransitionContainerPercentDrivenInteractiveTransition: NSObject
     
     weak var transitionContext: UIViewControllerContextTransitioning?
     
-    // MARK: Flags reporting the state
-    fileprivate(set) var isInInteraction: Bool = false
-    
-    fileprivate(set) var isInTearDown = false
+    // MARK: Flag reporting the state
+    fileprivate(set) var state: State = .isInactive
     
     // MARK: Initializers
     convenience init(with animator: UIViewControllerAnimatedTransitioning) {
@@ -73,12 +77,11 @@ class InteractiveTransitionContainerPercentDrivenInteractiveTransition: NSObject
 // MARK:
 extension InteractiveTransitionContainerPercentDrivenInteractiveTransition {
 
-    func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
+    public func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
         
         assert(self.animator != nil, "Animator object must be set on interactive transitioning context.")
         
-        self.isInTearDown = false
-        self.isInInteraction = true
+        self.state = .isInteracting
         
         self.transitionContext = transitionContext
         
@@ -89,7 +92,7 @@ extension InteractiveTransitionContainerPercentDrivenInteractiveTransition {
     
     func updateInteractiveTransition(percentComplete: CGFloat) {
         
-        guard isInInteraction else {
+        guard state == .isInteracting else {
             return
         }
         
@@ -100,11 +103,11 @@ extension InteractiveTransitionContainerPercentDrivenInteractiveTransition {
     
     func cancelInteractiveTransition() {
         
-        guard isInInteraction else {
+        guard state == .isInteracting else {
             return
         }
         
-        self.isInTearDown = true
+        self.state = .isInTearDown
         
         transitionContext!.cancelInteractiveTransition()
         
@@ -113,11 +116,11 @@ extension InteractiveTransitionContainerPercentDrivenInteractiveTransition {
     
     func finishInteractiveTransition() {
         
-        guard isInInteraction else {
+        guard state == .isInteracting else {
             return
         }
         
-        self.isInTearDown = true
+        self.state = .isInTearDown
         
         transitionContext!.finishInteractiveTransition()
         
@@ -162,6 +165,9 @@ extension InteractiveTransitionContainerPercentDrivenInteractiveTransition {
             // TODO: refactor
             transitionContext!.view(forKey: .to)?.removeFromSuperview()
             transitionContext!.view(forKey: .from)?.transform = CGAffineTransform.identity
+            if let containerFrame = transitionContext?.containerView.frame {
+                transitionContext!.view(forKey: .from)?.frame = containerFrame
+            }
             
         } else {
             
@@ -170,7 +176,6 @@ extension InteractiveTransitionContainerPercentDrivenInteractiveTransition {
             
         }
         
-        self.isInInteraction = false
-        self.isInTearDown = false
+        self.state = .isInactive
     }
 }

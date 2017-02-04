@@ -60,6 +60,7 @@ class SwipeToSlidePanGestureInteractiveTransition: InteractiveTransitionContaine
         switch recognizer.state {
             
         case .began:
+            
             isReadyToStart = true
             gestureRecognizedBlock(recognizer)
             isReadyToStart = false
@@ -67,19 +68,23 @@ class SwipeToSlidePanGestureInteractiveTransition: InteractiveTransitionContaine
         case .changed:
             
             // comming back to initial position in screen can cancel current animation
-            // and we need ignore those changes (context can be lost due to cancelling the 
-            // transition)
-            guard transitionContext != nil, !isInTearDown else {
+            // and we need ignore those changes
+            guard state != .isInTearDown else {
                 return
             }
             
             // Now if it was cancelled and torn down, but panning continues, we restart it
-            if !isInInteraction {
+            guard state == .isInteracting else {
                 
                 isReadyToStart = true
                 gestureRecognizedBlock(recognizer)
                 isReadyToStart = false
                 return
+            }
+            
+            guard transitionContext != nil else {
+                // transition context has to exist for us to perform transition
+                fatalError()
             }
             
             let translation = gestureRecognizer.translation(in: gestureRecognizer.view)
@@ -110,7 +115,7 @@ class SwipeToSlidePanGestureInteractiveTransition: InteractiveTransitionContaine
             
         default:
             
-            guard transitionContext != nil, !isInTearDown else {
+            guard transitionContext != nil, state != .isInTearDown else {
                 return
             }
             

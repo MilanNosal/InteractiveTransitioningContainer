@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol InteractiveTransitioningContainerDelegate: class {
+public protocol InteractiveTransitioningContainerDelegate: class {
     
     /// Returns viewController that manages the initial view of the container
     func initialViewController(

@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol InteractiveTransitioningContainerAnimationPositions {
+public protocol InteractiveTransitioningContainerAnimationPositions {
     
     var fromInitialFrame: CGRect { get }
     
@@ -20,14 +20,14 @@ protocol InteractiveTransitioningContainerAnimationPositions {
     
 }
 
-struct InteractiveTransitioningContainerAnimationPositionsImpl: InteractiveTransitioningContainerAnimationPositions {
+public struct InteractiveTransitioningContainerAnimationPositionsImpl: InteractiveTransitioningContainerAnimationPositions {
     
-    var fromInitialFrame: CGRect
+    public var fromInitialFrame: CGRect
     
-    var fromFinalFrame: CGRect
+    public var fromFinalFrame: CGRect
     
-    var toInitialFrame: CGRect
+    public var toInitialFrame: CGRect
     
-    var toFinalFrame: CGRect
+    public var toFinalFrame: CGRect
     
 }

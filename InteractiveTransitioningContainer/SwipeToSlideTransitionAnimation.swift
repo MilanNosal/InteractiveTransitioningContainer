@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class SwipeToSlideTransitionAnimation: NSObject, UIViewControllerAnimatedTransitioning {
     
     private let kDuration: TimeInterval
