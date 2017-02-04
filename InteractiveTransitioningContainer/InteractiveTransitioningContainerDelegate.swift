@@ -33,14 +33,24 @@ public protocol InteractiveTransitioningContainerDelegate: class {
         interactiveTransitioningContainer: InteractiveTransitioningContainer,
         interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning?
     
+    /// Allows to set up layout of the child view in container view
+    /// This allows us to use autolayout for the container if we choose so
+    func interactiveTransitioningContainer(
+        interactiveTransitioningContainer: InteractiveTransitioningContainer,
+        layoutViewController viewController: UIViewController, inContainerView containerView: UIView)
+    
+    /// Callback to get informed about finishing the transition
+    func interactiveTransitioningContainer(
+        interactiveTransitioningContainer: InteractiveTransitioningContainer,
+        transitionFinishedTo viewController: UIViewController,
+        wasCancelled: Bool)
+    
 }
 
 extension InteractiveTransitioningContainerDelegate {
     
-    /// Allows to set up layout of the child view in container view
     /// Default implementation just sets the child's frame to the container's frame
-    /// This allows us to use autolayout for the container if we choose so
-    func interactiveTransitioningContainer(
+    public func interactiveTransitioningContainer(
         interactiveTransitioningContainer: InteractiveTransitioningContainer,
         layoutViewController viewController: UIViewController, inContainerView containerView: UIView) {
         
@@ -49,10 +59,12 @@ extension InteractiveTransitioningContainerDelegate {
     }
     
     /// Callback to get informed about finishing the transition
-    func interactiveTransitioningContainer(
+    public func interactiveTransitioningContainer(
         interactiveTransitioningContainer: InteractiveTransitioningContainer,
         transitionFinishedTo viewController: UIViewController,
         wasCancelled: Bool) {
+        
+        print("fasdfdsasf")
         
     }
 }

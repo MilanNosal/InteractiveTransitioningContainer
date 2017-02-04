@@ -16,7 +16,7 @@ public class InteractiveTransitioningContainer: UIViewController {
     /// itself is responsible for calling the initial transit, plus all transitions will be forced 
     /// to be non-animated (animator has to be fed using the delegate)
     /// Be careful, the reference is weak
-    public weak var delegate: InteractiveTransitioningContainerDelegate?
+    weak var containerDelegate: InteractiveTransitioningContainerDelegate?
     
     fileprivate(set) var selectedViewController: UIViewController?
     
@@ -68,8 +68,8 @@ extension InteractiveTransitioningContainer {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let delegate = delegate {
-            transit(to: delegate.initialViewController(interactiveTransitioningContainer: self))
+        if let containerDelegate = containerDelegate {
+            transit(to: containerDelegate.initialViewController(interactiveTransitioningContainer: self))
         }
         
     }
@@ -95,7 +95,7 @@ extension InteractiveTransitioningContainer {
             self.containerView.addSubview(toViewController.view)
             
             // opportunity to set frame, add autolayout constraints, etc.
-            delegate?.interactiveTransitioningContainer(interactiveTransitioningContainer: self, layoutViewController: toViewController, inContainerView: self.containerView)
+            containerDelegate?.interactiveTransitioningContainer(interactiveTransitioningContainer: self, layoutViewController: toViewController, inContainerView: self.containerView)
             
             toViewController.didMove(toParentViewController: self)
             finishTransition(to: toViewController)
@@ -105,10 +105,10 @@ extension InteractiveTransitioningContainer {
         
         // either there is a delegate that is able to give us animator and animation positions,
         // or we won't animate and just use positions driven by the container view
-        let animator: UIViewControllerAnimatedTransitioning? = delegate?.interactiveTransitioningContainer(interactiveTransitioningContainer: self, animationControllerForTransitionFrom: fromViewController, to: toViewController)
+        let animator: UIViewControllerAnimatedTransitioning? = containerDelegate?.interactiveTransitioningContainer(interactiveTransitioningContainer: self, animationControllerForTransitionFrom: fromViewController, to: toViewController)
         
         let animationPositions: InteractiveTransitioningContainerAnimationPositions
-            = delegate?.interactiveTransitioningContainer(interactiveTransitioningContainer: self, animationPositionsForTransitionFrom: fromViewController, to: toViewController)
+            = containerDelegate?.interactiveTransitioningContainer(interactiveTransitioningContainer: self, animationPositionsForTransitionFrom: fromViewController, to: toViewController)
             ??
             InteractiveTransitioningContainerAnimationPositionsImpl(fromInitialFrame: containerView.frame, fromFinalFrame: containerView.frame, toInitialFrame: containerView.frame, toFinalFrame: containerView.frame)
             
@@ -116,7 +116,7 @@ extension InteractiveTransitioningContainer {
         
         transitionContext.isAnimated = animated && (animator != nil)
         
-        let interactionController = (animator != nil) ? delegate?.interactiveTransitioningContainer(interactiveTransitioningContainer: self, interactionControllerFor: animator!) : nil
+        let interactionController = (animator != nil) ? containerDelegate?.interactiveTransitioningContainer(interactiveTransitioningContainer: self, interactionControllerFor: animator!) : nil
         
         transitionContext.isInteractive = (interactionController != nil)
         
@@ -134,7 +134,7 @@ extension InteractiveTransitioningContainer {
                 }
                 
                 // opportunity to set frame, add autolayout constraints, etc.
-                self.delegate?.interactiveTransitioningContainer(interactiveTransitioningContainer: self, layoutViewController: toViewController, inContainerView: self.containerView)
+                self.containerDelegate?.interactiveTransitioningContainer(interactiveTransitioningContainer: self, layoutViewController: toViewController, inContainerView: self.containerView)
                 
                 toViewController.didMove(toParentViewController: self)
                 
@@ -149,7 +149,7 @@ extension InteractiveTransitioningContainer {
                     self.containerView.addSubview(fromViewController.view)
                 }
                 
-                self.delegate?.interactiveTransitioningContainer(interactiveTransitioningContainer: self, layoutViewController: fromViewController, inContainerView: self.containerView)
+                self.containerDelegate?.interactiveTransitioningContainer(interactiveTransitioningContainer: self, layoutViewController: fromViewController, inContainerView: self.containerView)
                 
                 // do I need this to play nice?
 //                fromViewController.didMove(toParentViewController: self)
@@ -178,14 +178,14 @@ extension InteractiveTransitioningContainer {
         }
     }
     
-    // sets selected vie controller and calls delegate's callback
+    // sets selected viewcontroller and calls delegate's callback
     fileprivate func finishTransition(to viewController: UIViewController) {
         
         let cancelled = self.selectedViewController === viewController
         
         self.selectedViewController = viewController
         
-        delegate?.interactiveTransitioningContainer(interactiveTransitioningContainer: self, transitionFinishedTo: viewController, wasCancelled: cancelled)
+        containerDelegate?.interactiveTransitioningContainer(interactiveTransitioningContainer: self, transitionFinishedTo: viewController, wasCancelled: cancelled)
         
     }
     

@@ -8,6 +8,15 @@
 
 import UIKit
 
+public protocol SwipeToSlideInteractiveTransitioningContainerDelegate: class {
+    
+    func swipeToSlideInteractiveTransitioningContainer(
+        swipeToSlideInteractiveTransitioningContainer: SwipeToSlideInteractiveTransitioningContainer,
+        didFinishTransitionTo viewController: UIViewController,
+        wasCancelled: Bool)
+    
+}
+
 public class SwipeToSlideInteractiveTransitioningContainer: InteractiveTransitioningContainer {
     
     // MARK: Delegate fields
@@ -20,6 +29,9 @@ public class SwipeToSlideInteractiveTransitioningContainer: InteractiveTransitio
             return self.interactionController?.gestureRecognizer
         }
     }
+    
+    // Specific delegate for this container
+    public weak var delegate: SwipeToSlideInteractiveTransitioningContainerDelegate?
     
     // MARK: Instance fields
     let viewControllers: [UIViewController]
@@ -63,7 +75,7 @@ extension SwipeToSlideInteractiveTransitioningContainer {
             }
         }
         
-        delegate = self
+        containerDelegate = self
     }
     
 }
@@ -117,6 +129,12 @@ extension SwipeToSlideInteractiveTransitioningContainer: InteractiveTransitionin
         } else {
             return nil
         }
+        
+    }
+    
+    public func interactiveTransitioningContainer(interactiveTransitioningContainer: InteractiveTransitioningContainer, transitionFinishedTo viewController: UIViewController, wasCancelled: Bool) {
+        
+        delegate?.swipeToSlideInteractiveTransitioningContainer(swipeToSlideInteractiveTransitioningContainer: self, didFinishTransitionTo: viewController, wasCancelled: wasCancelled)
         
     }
 }
