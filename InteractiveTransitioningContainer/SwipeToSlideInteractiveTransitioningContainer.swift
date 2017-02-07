@@ -11,7 +11,7 @@ import UIKit
 public protocol SwipeToSlideInteractiveTransitioningContainerDelegate: class {
     
     func swipeToSlideInteractiveTransitioningContainer(
-        swipeToSlideInteractiveTransitioningContainer: SwipeToSlideInteractiveTransitioningContainer,
+        _ swipeToSlideInteractiveTransitioningContainer: SwipeToSlideInteractiveTransitioningContainer,
         didFinishTransitionTo viewController: UIViewController,
         wasCancelled: Bool)
     
@@ -83,14 +83,14 @@ extension SwipeToSlideInteractiveTransitioningContainer {
 extension SwipeToSlideInteractiveTransitioningContainer: InteractiveTransitioningContainerDelegate {
     
     public func initialViewController(
-        interactiveTransitioningContainer: InteractiveTransitioningContainer) -> UIViewController {
+        _ interactiveTransitioningContainer: InteractiveTransitioningContainer) -> UIViewController {
         
         return viewControllers.first!
         
     }
     
     public func interactiveTransitioningContainer(
-        interactiveTransitioningContainer: InteractiveTransitioningContainer,
+        _ interactiveTransitioningContainer: InteractiveTransitioningContainer,
         animationControllerForTransitionFrom fromViewController: UIViewController,
         to toViewController: UIViewController) -> UIViewControllerAnimatedTransitioning {
         
@@ -99,7 +99,7 @@ extension SwipeToSlideInteractiveTransitioningContainer: InteractiveTransitionin
     }
     
     public func interactiveTransitioningContainer(
-        interactiveTransitioningContainer: InteractiveTransitioningContainer,
+        _ interactiveTransitioningContainer: InteractiveTransitioningContainer,
         animationPositionsForTransitionFrom fromViewController: UIViewController,
         to toViewController: UIViewController) -> InteractiveTransitioningContainerAnimationPositions {
         
@@ -120,21 +120,20 @@ extension SwipeToSlideInteractiveTransitioningContainer: InteractiveTransitionin
     }
     
     public func interactiveTransitioningContainer(
-        interactiveTransitioningContainer: InteractiveTransitioningContainer,
+        _ interactiveTransitioningContainer: InteractiveTransitioningContainer,
         interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         
-        if interactionController.isReadyToStart == true {
-            self.interactionController.animator = animationController
-            return self.interactionController
-        } else {
-            return nil
-        }
-        
+        self.interactionController.animator = animationController
+        return self.interactionController
+    
     }
     
-    public func interactiveTransitioningContainer(interactiveTransitioningContainer: InteractiveTransitioningContainer, transitionFinishedTo viewController: UIViewController, wasCancelled: Bool) {
+    public func interactiveTransitioningContainer(
+        _ interactiveTransitioningContainer: InteractiveTransitioningContainer,
+        transitionFinishedTo viewController: UIViewController,
+        wasCancelled: Bool) {
         
-        delegate?.swipeToSlideInteractiveTransitioningContainer(swipeToSlideInteractiveTransitioningContainer: self, didFinishTransitionTo: viewController, wasCancelled: wasCancelled)
+        delegate?.swipeToSlideInteractiveTransitioningContainer(self, didFinishTransitionTo: viewController, wasCancelled: wasCancelled)
         
     }
 }

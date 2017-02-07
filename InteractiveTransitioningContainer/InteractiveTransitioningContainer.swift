@@ -22,7 +22,6 @@ public class InteractiveTransitioningContainer: UIViewController {
     
     fileprivate(set) var containerView: UIView!
     
-    
     /// It is the responsibility of the subclass to call transit in viewDidLoad override in order
     /// to present the initial view
     public func transit(to viewController: UIViewController, animated: Bool = true) {
@@ -69,7 +68,7 @@ extension InteractiveTransitioningContainer {
         super.viewDidLoad()
         
         if let containerDelegate = containerDelegate {
-            transit(to: containerDelegate.initialViewController(interactiveTransitioningContainer: self))
+            transit(to: containerDelegate.initialViewController(self))
         }
         
     }
@@ -95,7 +94,7 @@ extension InteractiveTransitioningContainer {
             self.containerView.addSubview(toViewController.view)
             
             // opportunity to set frame, add autolayout constraints, etc.
-            containerDelegate?.interactiveTransitioningContainer(interactiveTransitioningContainer: self, layoutViewController: toViewController, inContainerView: self.containerView)
+            containerDelegate?.interactiveTransitioningContainer(self, layoutIfNotAlready: toViewController, inContainerView: self.containerView)
             
             toViewController.didMove(toParentViewController: self)
             finishTransition(to: toViewController)
@@ -105,10 +104,10 @@ extension InteractiveTransitioningContainer {
         
         // either there is a delegate that is able to give us animator and animation positions,
         // or we won't animate and just use positions driven by the container view
-        let animator: UIViewControllerAnimatedTransitioning? = containerDelegate?.interactiveTransitioningContainer(interactiveTransitioningContainer: self, animationControllerForTransitionFrom: fromViewController, to: toViewController)
+        let animator: UIViewControllerAnimatedTransitioning? = containerDelegate?.interactiveTransitioningContainer(self, animationControllerForTransitionFrom: fromViewController, to: toViewController)
         
         let animationPositions: InteractiveTransitioningContainerAnimationPositions
-            = containerDelegate?.interactiveTransitioningContainer(interactiveTransitioningContainer: self, animationPositionsForTransitionFrom: fromViewController, to: toViewController)
+            = containerDelegate?.interactiveTransitioningContainer(self, animationPositionsForTransitionFrom: fromViewController, to: toViewController)
             ??
             InteractiveTransitioningContainerAnimationPositionsImpl(fromInitialFrame: containerView.frame, fromFinalFrame: containerView.frame, toInitialFrame: containerView.frame, toFinalFrame: containerView.frame)
             
@@ -116,7 +115,7 @@ extension InteractiveTransitioningContainer {
         
         transitionContext.isAnimated = animated && (animator != nil)
         
-        let interactionController = (animator != nil) ? containerDelegate?.interactiveTransitioningContainer(interactiveTransitioningContainer: self, interactionControllerFor: animator!) : nil
+        let interactionController = (animator != nil) ? containerDelegate?.interactiveTransitioningContainer(self, interactionControllerFor: animator!) : nil
         
         transitionContext.isInteractive = (interactionController != nil)
         
@@ -134,7 +133,7 @@ extension InteractiveTransitioningContainer {
                 }
                 
                 // opportunity to set frame, add autolayout constraints, etc.
-                self.containerDelegate?.interactiveTransitioningContainer(interactiveTransitioningContainer: self, layoutViewController: toViewController, inContainerView: self.containerView)
+                self.containerDelegate?.interactiveTransitioningContainer(self, layoutIfNotAlready: toViewController, inContainerView: self.containerView)
                 
                 toViewController.didMove(toParentViewController: self)
                 
@@ -149,7 +148,7 @@ extension InteractiveTransitioningContainer {
                     self.containerView.addSubview(fromViewController.view)
                 }
                 
-                self.containerDelegate?.interactiveTransitioningContainer(interactiveTransitioningContainer: self, layoutViewController: fromViewController, inContainerView: self.containerView)
+                self.containerDelegate?.interactiveTransitioningContainer(self, layoutIfNotAlready: fromViewController, inContainerView: self.containerView)
                 
                 // do I need this to play nice?
 //                fromViewController.didMove(toParentViewController: self)
@@ -158,6 +157,9 @@ extension InteractiveTransitioningContainer {
                 
             }
         }
+        
+//         first we release the fromViewController from the layout
+        self.containerDelegate?.interactiveTransitioningContainer(self, releaseLayoutOf: fromViewController, inContainerView: self.containerView)
         
         if !transitionContext.isAnimated {
             // we support also non-animated transitions
@@ -185,7 +187,7 @@ extension InteractiveTransitioningContainer {
         
         self.selectedViewController = viewController
         
-        containerDelegate?.interactiveTransitioningContainer(interactiveTransitioningContainer: self, transitionFinishedTo: viewController, wasCancelled: cancelled)
+        containerDelegate?.interactiveTransitioningContainer(self, transitionFinishedTo: viewController, wasCancelled: cancelled)
         
     }
     

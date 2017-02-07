@@ -59,6 +59,9 @@ public class InteractiveTransitionContainerPercentDrivenInteractiveTransition: N
     
     weak var transitionContext: UIViewControllerContextTransitioning?
     
+    weak var interactiveTransitionContainer: InteractiveTransitioningContainer?
+    weak var interactiveTransitionContainerDelegate: InteractiveTransitioningContainerDelegate?
+    
     // MARK: Flag reporting the state
     fileprivate(set) var state: State = .isInactive
     
@@ -80,6 +83,10 @@ extension InteractiveTransitionContainerPercentDrivenInteractiveTransition {
     public func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
         
         assert(self.animator != nil, "Animator object must be set on interactive transitioning context.")
+        
+        guard state == .isInactive else {
+            return
+        }
         
         self.state = .isInteracting
         
@@ -160,13 +167,13 @@ extension InteractiveTransitionContainerPercentDrivenInteractiveTransition {
         
         if transitionContext!.transitionWasCancelled {
             
-            // Without this interactive cancelling cause glitching
-            
-            // TODO: refactor
+            // Without this interactive cancelling causes glitching
             transitionContext!.view(forKey: .to)?.removeFromSuperview()
-            transitionContext!.view(forKey: .from)?.transform = CGAffineTransform.identity
-            if let containerFrame = transitionContext?.containerView.frame {
-                transitionContext!.view(forKey: .from)?.frame = containerFrame
+            
+            if let interactiveTransitionContainer = interactiveTransitionContainer {
+                
+                interactiveTransitionContainerDelegate?.interactiveTransitioningContainer(interactiveTransitionContainer, layoutIfNotAlready: transitionContext!.viewController(forKey: .from)!, inContainerView: transitionContext!.containerView)
+                
             }
             
         } else {

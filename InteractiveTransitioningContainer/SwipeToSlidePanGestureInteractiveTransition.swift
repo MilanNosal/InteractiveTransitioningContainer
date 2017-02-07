@@ -27,10 +27,6 @@ class SwipeToSlidePanGestureInteractiveTransition: InteractiveTransitionContaine
     
     
     
-    var isReadyToStart: Bool = false
-    
-    
-    
     init(in view: UIView, progressThreshold: CGFloat = 0.35, velocityOverrideThreshold: CGFloat = 550, recognizedBlock: @escaping ((_ recognizer: UIPanGestureRecognizer) -> Void)) {
         
         self.progressNeeded = progressThreshold
@@ -46,10 +42,6 @@ class SwipeToSlidePanGestureInteractiveTransition: InteractiveTransitionContaine
     
     override func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
         
-        guard isReadyToStart else {
-            fatalError("Call of startInteractiveTransition in unsupported flow.")
-        }
-        
         super.startInteractiveTransition(transitionContext)
         self.leftToRightTransition = gestureRecognizer.velocity(in: gestureRecognizer.view).x > 0
         
@@ -61,9 +53,7 @@ class SwipeToSlidePanGestureInteractiveTransition: InteractiveTransitionContaine
             
         case .began:
             
-            isReadyToStart = true
             gestureRecognizedBlock(recognizer)
-            isReadyToStart = false
             
         case .changed:
             
@@ -76,9 +66,7 @@ class SwipeToSlidePanGestureInteractiveTransition: InteractiveTransitionContaine
             // Now if it was cancelled and torn down, but panning continues, we restart it
             guard state == .isInteracting else {
                 
-                isReadyToStart = true
                 gestureRecognizedBlock(recognizer)
-                isReadyToStart = false
                 return
             }
             
