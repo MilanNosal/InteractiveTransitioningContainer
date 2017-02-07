@@ -20,7 +20,7 @@ public protocol SwipeToSlideInteractiveTransitioningContainerDelegate: class {
 public class SwipeToSlideInteractiveTransitioningContainer: InteractiveTransitioningContainer {
     
     // MARK: Delegate fields
-    let animator = SwipeToSlideTransitionAnimation()
+    fileprivate var animator: UIViewControllerAnimatedTransitioning!
     
     fileprivate var interactionController: SwipeToSlidePanGestureInteractiveTransition!
     
@@ -58,7 +58,29 @@ extension SwipeToSlideInteractiveTransitioningContainer {
     override public func loadView() {
         super.loadView()
         
-        interactionController = SwipeToSlidePanGestureInteractiveTransition(in: self.containerView) {
+        animator = animatorFactory()
+        
+        interactionController = interactionControllerFactory(in: self.containerView)
+        
+        interactionController.interactiveTransitionContainer = self
+        interactionController.interactiveTransitionContainerDelegate = self
+        
+        containerDelegate = self
+    }
+    
+}
+
+extension SwipeToSlideInteractiveTransitioningContainer {
+    
+    func animatorFactory() -> UIViewControllerAnimatedTransitioning {
+        
+        return SwipeToSlideTransitionAnimation()
+        
+    }
+    
+    func interactionControllerFactory(in view: UIView) -> SwipeToSlidePanGestureInteractiveTransition {
+        
+        return SwipeToSlidePanGestureInteractiveTransition(in: view) {
             [weak weakself = self] (panGestureRecognizer) in
             
             guard let wself = weakself, let selected = wself.selectedViewController else {
@@ -75,7 +97,6 @@ extension SwipeToSlideInteractiveTransitioningContainer {
             }
         }
         
-        containerDelegate = self
     }
     
 }
