@@ -53,6 +53,8 @@ public protocol InteractiveTransitioningContainerDelegate: class {
     
 }
 
+
+// MARK: Default implementation for layout
 extension InteractiveTransitioningContainerDelegate {
     
     /// Default implementation just sets the child's frame to the container's frame

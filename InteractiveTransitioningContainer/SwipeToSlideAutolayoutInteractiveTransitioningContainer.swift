@@ -36,9 +36,9 @@ extension SwipeToSlideAutolayoutInteractiveTransitioningContainer {
             
             let currentIndex = wself.viewControllers.index(of: selected)!
             if leftToRight && currentIndex > 0 {
-                wself.transit(to: wself.viewControllers[currentIndex - 1])
+                wself.transition(to: wself.viewControllers[currentIndex - 1])
             } else if !leftToRight && currentIndex != wself.viewControllers.count - 1 {
-                wself.transit(to: wself.viewControllers[currentIndex + 1])
+                wself.transition(to: wself.viewControllers[currentIndex + 1])
             }
         }
         
