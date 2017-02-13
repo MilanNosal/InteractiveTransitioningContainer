@@ -6,7 +6,7 @@
 //  Copyright © 2017 Svagant. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 // Custom percent driven interactive transition object - should be inherited from when used with InteractiveTransitioningContainer
 // I've had some problems with the original implementation of Alek Akstrom, so I use this slight modification
