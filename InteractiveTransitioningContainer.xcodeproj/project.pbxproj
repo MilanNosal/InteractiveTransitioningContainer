@@ -16,6 +16,7 @@
 		999DCC0F1E352A6E00311D96 /* InteractiveTransitioningContainerTransitionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999DCC0E1E352A6E00311D96 /* InteractiveTransitioningContainerTransitionContext.swift */; };
 		999DCC111E352AC400311D96 /* SwipeToSlidePanGestureInteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999DCC101E352AC400311D96 /* SwipeToSlidePanGestureInteractiveTransition.swift */; };
 		999DCC131E352B0C00311D96 /* InteractiveTransitioningContainerPercentDrivenInteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999DCC121E352B0C00311D96 /* InteractiveTransitioningContainerPercentDrivenInteractiveTransition.swift */; };
+		999E28131E4CBC9D00501351 /* InteractiveTransitioningContainerChild.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999E28121E4CBC9D00501351 /* InteractiveTransitioningContainerChild.swift */; };
 		99A63C331E438121003502C7 /* SwipeToSlideInteractiveTransitioningContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A63C321E438121003502C7 /* SwipeToSlideInteractiveTransitioningContainer.swift */; };
 		99B87E341E4350DD007F26F8 /* InteractiveTransitioningContainerAnimationPositions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B87E331E4350DD007F26F8 /* InteractiveTransitioningContainerAnimationPositions.swift */; };
 		99F1B5891E48F1A40012A198 /* SwipeToSlideAutolayoutTransitionAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F1B5881E48F1A30012A198 /* SwipeToSlideAutolayoutTransitionAnimation.swift */; };
@@ -35,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		99528A021E51E1C900D659E3 /* InteractiveTransitioningContainerAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteractiveTransitioningContainerAnimator.swift; sourceTree = "<group>"; };
+		9983744C1E4A834400E2EC33 /* InteractiveTransitioningContainerTransitionCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteractiveTransitioningContainerTransitionCoordinator.swift; sourceTree = "<group>"; };
 		999DCBEE1E34C9BC00311D96 /* InteractiveTransitioningContainer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = InteractiveTransitioningContainer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		999DCBF11E34C9BC00311D96 /* InteractiveTransitioningContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InteractiveTransitioningContainer.h; sourceTree = "<group>"; };
 		999DCBF21E34C9BC00311D96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -47,6 +50,7 @@
 		999DCC0E1E352A6E00311D96 /* InteractiveTransitioningContainerTransitionContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteractiveTransitioningContainerTransitionContext.swift; sourceTree = "<group>"; };
 		999DCC101E352AC400311D96 /* SwipeToSlidePanGestureInteractiveTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeToSlidePanGestureInteractiveTransition.swift; sourceTree = "<group>"; };
 		999DCC121E352B0C00311D96 /* InteractiveTransitioningContainerPercentDrivenInteractiveTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteractiveTransitioningContainerPercentDrivenInteractiveTransition.swift; sourceTree = "<group>"; };
+		999E28121E4CBC9D00501351 /* InteractiveTransitioningContainerChild.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteractiveTransitioningContainerChild.swift; sourceTree = "<group>"; };
 		99A63C321E438121003502C7 /* SwipeToSlideInteractiveTransitioningContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeToSlideInteractiveTransitioningContainer.swift; sourceTree = "<group>"; };
 		99B87E331E4350DD007F26F8 /* InteractiveTransitioningContainerAnimationPositions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteractiveTransitioningContainerAnimationPositions.swift; sourceTree = "<group>"; };
 		99F1B5881E48F1A30012A198 /* SwipeToSlideAutolayoutTransitionAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeToSlideAutolayoutTransitionAnimation.swift; sourceTree = "<group>"; };
@@ -82,6 +86,8 @@
 				99B87E331E4350DD007F26F8 /* InteractiveTransitioningContainerAnimationPositions.swift */,
 				999DCC0E1E352A6E00311D96 /* InteractiveTransitioningContainerTransitionContext.swift */,
 				999DCC121E352B0C00311D96 /* InteractiveTransitioningContainerPercentDrivenInteractiveTransition.swift */,
+				9983744C1E4A834400E2EC33 /* InteractiveTransitioningContainerTransitionCoordinator.swift */,
+				999E28121E4CBC9D00501351 /* InteractiveTransitioningContainerChild.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -122,6 +128,7 @@
 				998219C61E3629DC00BC209A /* Core */,
 				998219C71E3629F700BC209A /* SwipeToSlideImpl */,
 				99F1B5871E48F15E0012A198 /* SwipeToSlideAutolayoutImpl */,
+				99B0B3671E49EA15008FBDA1 /* SwipeToSlideTabBarController */,
 			);
 			path = InteractiveTransitioningContainer;
 			sourceTree = "<group>";
@@ -133,6 +140,13 @@
 				999DCBFE1E34C9BC00311D96 /* Info.plist */,
 			);
 			path = InteractiveTransitioningContainerTests;
+			sourceTree = "<group>";
+		};
+		99B0B3671E49EA15008FBDA1 /* SwipeToSlideTabBarController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = SwipeToSlideTabBarController;
 			sourceTree = "<group>";
 		};
 		99F1B5871E48F15E0012A198 /* SwipeToSlideAutolayoutImpl */ = {
@@ -258,6 +272,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				999E28131E4CBC9D00501351 /* InteractiveTransitioningContainerChild.swift in Sources */,
 				99F1B58D1E4912D90012A198 /* UIView.swift in Sources */,
 				999DCC131E352B0C00311D96 /* InteractiveTransitioningContainerPercentDrivenInteractiveTransition.swift in Sources */,
 				999DCC091E34D3F200311D96 /* InteractiveTransitioningContainer.swift in Sources */,
@@ -269,6 +284,7 @@
 				99F1B5891E48F1A40012A198 /* SwipeToSlideAutolayoutTransitionAnimation.swift in Sources */,
 				99F1B5911E4918260012A198 /* SwipeToSlideAutolayoutInteractiveTransitioningContainer.swift in Sources */,
 				999DCC111E352AC400311D96 /* SwipeToSlidePanGestureInteractiveTransition.swift in Sources */,
+				9983744D1E4A834400E2EC33 /* InteractiveTransitioningContainerTransitionCoordinator.swift in Sources */,
 				99B87E341E4350DD007F26F8 /* InteractiveTransitioningContainerAnimationPositions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
