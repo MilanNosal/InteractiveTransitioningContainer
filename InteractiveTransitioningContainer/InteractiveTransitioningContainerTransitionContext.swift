@@ -22,13 +22,30 @@ class InteractiveTransitioningContainerTransitionContext: NSObject, UIViewContro
     
     var presentationStyle: UIModalPresentationStyle
     
-    var transitionWasCancelled: Bool = false
+    var transitionWasCancelled: Bool = false {
+        didSet {
+            transitionCoordinator.isCancelled = self.transitionWasCancelled
+        }
+    }
     
-    var targetTransform: CGAffineTransform = CGAffineTransform.identity
+    var targetTransform: CGAffineTransform = CGAffineTransform.identity {
+        didSet {
+            transitionCoordinator.targetTransform = self.targetTransform
+        }
+    }
     
-    var isAnimated: Bool = false
+    var isAnimated: Bool = false {
+        didSet {
+            transitionCoordinator.isAnimated = self.isAnimated
+        }
+    }
     
-    var isInteractive: Bool = false
+    var isInteractive: Bool = false {
+        didSet {
+            transitionCoordinator.isInteractive = self.isInteractive
+            transitionCoordinator.initiallyInteractive = self.isInteractive
+        }
+    }
     
     // MARK: Internal fields
     fileprivate var viewControllers: [UITransitionContextViewControllerKey:UIViewController]
@@ -40,6 +57,9 @@ class InteractiveTransitioningContainerTransitionContext: NSObject, UIViewContro
     fileprivate let animationPositions: InteractiveTransitioningContainerAnimationPositions
     
     var completionBlock: ((_ didComplete: Bool) -> Void)?
+    
+    // transitionContext will be responsible for keeping coordinator up-to-date
+    let transitionCoordinator: InteractiveTransitioningContainerTransitionCoordinator
     
     // MARK: Initializer
     init(
@@ -61,6 +81,8 @@ class InteractiveTransitioningContainerTransitionContext: NSObject, UIViewContro
         ]
         
         self.animationPositions = animationPositions
+        
+        transitionCoordinator = InteractiveTransitioningContainerTransitionCoordinator(in: self.containerView, from: fromViewController, to: toViewController)
         
         super.init()
     }
