@@ -8,7 +8,7 @@
 
 import Foundation
 
-class SwipeToSlidePanGestureInteractiveTransition: InteractiveTransitionContainerPercentDrivenInteractiveTransition {
+class SwipeToSlidePanGestureInteractiveTransition: InteractiveTransitionContainerAnimatorBasedPercentDrivenInteractiveTransition {
     
     private let progressNeeded: CGFloat
     

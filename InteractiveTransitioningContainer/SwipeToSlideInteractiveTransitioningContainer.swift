@@ -62,9 +62,6 @@ extension SwipeToSlideInteractiveTransitioningContainer {
         
         interactionController = interactionControllerFactory(in: self.containerView)
         
-        interactionController.interactiveTransitionContainer = self
-        interactionController.interactiveTransitionContainerDelegate = self
-        
         containerDelegate = self
     }
     
@@ -91,9 +88,9 @@ extension SwipeToSlideInteractiveTransitioningContainer {
             
             let currentIndex = wself.viewControllers.index(of: selected)!
             if leftToRight && currentIndex > 0 {
-                wself.transition(to: wself.viewControllers[currentIndex - 1])
+                wself.transition(to: wself.viewControllers[currentIndex - 1], interactive: true)
             } else if !leftToRight && currentIndex != wself.viewControllers.count - 1 {
-                wself.transition(to: wself.viewControllers[currentIndex + 1])
+                wself.transition(to: wself.viewControllers[currentIndex + 1], interactive: true)
             }
         }
         
