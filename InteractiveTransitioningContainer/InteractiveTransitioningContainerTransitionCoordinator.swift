@@ -98,27 +98,21 @@ extension InteractiveTransitioningContainerTransitionCoordinator {
     func completeTransition() {
         
         completionCallbacks.forEach { (callback) in
-            
             callback(self)
-            
         }
     }
     
     func notifyInteractionChanged() {
         
         changeNotificationCallbacks.forEach { (notificationCallbacks) in
-            
             notificationCallbacks(self)
-            
         }
     }
     
     func notifyInteractionEnded() {
         
         endNotificationCallbacks.forEach { (notificationCallbacks) in
-            
             notificationCallbacks(self)
-            
         }
     }
     
@@ -129,45 +123,30 @@ extension InteractiveTransitioningContainerTransitionCoordinator {
     fileprivate func add(viewForAnimation: UIView?) -> Bool {
         
         if let view = viewForAnimation {
-            
             nonContaineeAnimatedViews.append(view)
-            
             return true
-            
         } else {
-            
             return false
-            
         }
     }
     
     fileprivate func add(alongsideAnimation: CoordinatorCallback?) -> Bool {
         
         if let animation = alongsideAnimation {
-            
             animations.append(animation)
-            
             return true
-            
         } else {
-            
             return false
-            
         }
     }
     
     fileprivate func add(completionBlock: CoordinatorCallback?) -> Bool {
         
         if let completion = completionBlock {
-            
             completionCallbacks.append(completion)
-            
             return true
-            
         } else {
-            
             return false
-            
         }
     }
 }
