@@ -8,6 +8,8 @@
 
 import UIKit
 
+// Use with animationControllers that provide interruptibleAnimator
+// This is the recommended approach
 public class InteractiveTransitionContainerAnimatorBasedPercentDrivenInteractiveTransition: InteractiveTransitionContainerPercentDrivenInteractiveTransition {
     
     

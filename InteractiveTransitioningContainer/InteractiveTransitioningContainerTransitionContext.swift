@@ -66,18 +66,17 @@ class InteractiveTransitioningContainerTransitionContext: NSObject, UIViewContro
         in containerView: UIView,
         from fromViewController: UIViewController,
         to toViewController: UIViewController,
-        
         animationPositions: InteractiveTransitioningContainerAnimationPositions) {
         
         self.presentationStyle = .custom
         self.containerView = containerView
         self.viewControllers = [
-            UITransitionContextViewControllerKey.from:fromViewController,
-            UITransitionContextViewControllerKey.to:toViewController
+            UITransitionContextViewControllerKey.from: fromViewController,
+            UITransitionContextViewControllerKey.to: toViewController
         ]
         self.views = [
-            UITransitionContextViewKey.from:fromViewController.view,
-            UITransitionContextViewKey.to:toViewController.view
+            UITransitionContextViewKey.from: fromViewController.view,
+            UITransitionContextViewKey.to: toViewController.view
         ]
         
         self.animationPositions = animationPositions

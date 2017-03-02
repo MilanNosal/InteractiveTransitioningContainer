@@ -17,19 +17,24 @@ import UIKit
 // - http://www.iosnomad.com/blog/2014/5/12/interactive-custom-container-view-controller-transitions
 public class InteractiveTransitioningContainer: UIViewController {
     
-    /// Delegate is used for managing all the custom behavior - without the delegate the container
-    /// itself is responsible for calling the initial transit, plus all transitions will be forced 
-    /// to be non-animated (animator has to be fed using the delegate)
-    /// Be careful, the reference is weak
+    /// Delegate is used for managing all the custom behavior
+    /// For the initial VC to be set up correctly, provide the delegate before 
+    /// viewDidLoad is called (either in loadView, or before calling super.viewDidLoad in subclass)
+    /// Reference to containerDelegate is weak
     weak var containerDelegate: InteractiveTransitioningContainerDelegate?
     
-    fileprivate(set) public var selectedViewController: UIViewController?
+    fileprivate(set) public var selectedViewController: UIViewController!
     
-    fileprivate(set) public var containerView: UIView!
+    internal(set) public var containerView: UIView!
     
     fileprivate weak var transitionCoordinatorField: InteractiveTransitioningContainerTransitionCoordinator?
     
     public func transition(to viewController: UIViewController, animated: Bool = true, interactive: Bool = false) {
+        
+        guard selectedViewController != nil else {
+            self.transition(toInitialViewController: viewController)
+            return
+        }
         
         self.transition(from: selectedViewController, to: viewController, animated: animated, interactive: interactive)
         
@@ -40,6 +45,7 @@ public class InteractiveTransitioningContainer: UIViewController {
 // MARK: Initialization
 extension InteractiveTransitioningContainer {
     
+    // It is required that you call super.loadView at the beginning of overriding implementation of loadView
     public override func loadView() {
         
         super.loadView()
@@ -52,6 +58,15 @@ extension InteractiveTransitioningContainer {
         
         applyConstraints()
         
+    }
+    
+    /// If the delegate is already set, the initialViewController is loaded into view
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        if let initialViewController = containerDelegate?.initialViewController(self) {
+            transition(toInitialViewController: initialViewController)
+        }
     }
     
     private func layoutComponents() {
@@ -68,111 +83,58 @@ extension InteractiveTransitioningContainer {
     fileprivate func applyConstraints() {
         
     }
+}
+
+// MARK: Load initial viewControlled child
+extension InteractiveTransitioningContainer {
     
-    public override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        if let containerDelegate = containerDelegate {
-            transition(to: containerDelegate.initialViewController(self))
+    fileprivate func transition(toInitialViewController initialViewController: UIViewController) {
+        guard self.isViewLoaded else {
+            return
         }
         
+        self.addChildViewController(initialViewController)
+        
+        self.containerView.addSubview(initialViewController.view)
+        self.containerDelegate?.interactiveTransitioningContainer(self, layoutIfNotAlready: initialViewController, inContainerView: self.containerView)
+        initialViewController.didMove(toParentViewController: self)
+        
+        finishTransition(to: initialViewController)
     }
     
 }
 
-// MARK: transitioning
+// MARK: Transitions between childs
 extension InteractiveTransitioningContainer {
     
     fileprivate func transition(
-        from fromViewController: UIViewController?,
+        from fromViewController: UIViewController,
         to toViewController: UIViewController,
-        animated: Bool,
-        interactive: Bool) {
+        animated: Bool, interactive: Bool) {
         
+        assert(!(!animated && interactive), "Non-animated transition cannot be interactive!")
         
         guard toViewController != fromViewController && self.isViewLoaded else {
             return
         }
         
-        // start of transition lifecycle
-        fromViewController?.willMove(toParentViewController: nil)
-        self.addChildViewController(toViewController)
-        
-        // If this is the initial presentation, add the new child with no animation
-        guard let fromViewController = fromViewController else {
-            
-            completeSuccessfulTransition(from: nil, to: toViewController)
-            
-            return
-        }
-        
-        // we create the transition drivers (animator, interactionController, transitionContext)
+        // prepare transition controllers
         let animationController = createAnimationController(forTransitionFrom: fromViewController, to: toViewController)
-        
         let interactionController = createInteractionController(for: animationController)
-        
         let transitionContext = createTransitionContext(
             forTransitionFrom: fromViewController, to: toViewController,
             using: animationController, and: interactionController,
             animated: animated, interactive: interactive)
         
-        // first we release the fromViewController from the layout
-        self.containerDelegate?.interactiveTransitioningContainer(self, releaseLayoutOf: fromViewController, inContainerView: self.containerView)
+        beginTransition(from: fromViewController, to: toViewController, animated: transitionContext.isAnimated)
         
-        // finally we perform the actual transition
-        if !transitionContext.isAnimated {
-            
-            performNonAnimatedTransition(
-                using: transitionContext)
-            
-        } else if transitionContext.isInteractive {
-            
-            performInteractiveTransition(
-                using: transitionContext, controlledBy: interactionController!)
-            
-        } else {
-            
-            performAnimatedTransition(
-                using: transitionContext, animatedBy: animationController!)
-            
-        }
-        
+        performTransition(using: transitionContext, animatedBy: animationController, controlledBy: interactionController)
     }
-    
-    // sets selected viewcontroller and calls delegate's callback
-    fileprivate func finishTransition(to viewController: UIViewController) {
-        
-        let cancelled = (self.selectedViewController === viewController)
-        
-        self.selectedViewController = viewController
-        
-        containerDelegate?.interactiveTransitioningContainer(self, transitionFinishedTo: viewController, wasCancelled: cancelled)
-        
-    }
-    
 }
 
-// MARK: Transition objects creation methods
+// MARK: Animation controllers' factory methods
 extension InteractiveTransitioningContainer {
-    
-    fileprivate func createAnimationPositions(
-        forTransitionFrom fromViewController: UIViewController,
-        to toViewController: UIViewController
-        ) -> InteractiveTransitioningContainerAnimationPositions {
-        
-        var animationPositions: InteractiveTransitioningContainerAnimationPositions? = containerDelegate?.interactiveTransitioningContainer(self, animationPositionsForTransitionFrom: fromViewController, to: toViewController)
-        
-        if let animationPositions = animationPositions {
-            
-            return animationPositions
-            
-        } else {
-            
-            return InteractiveTransitioningContainerAnimationPositionsImpl(fromInitialFrame: containerView.frame, fromFinalFrame: containerView.frame, toInitialFrame: containerView.frame, toFinalFrame: containerView.frame)
-            
-        }
-    }
-    
+
     fileprivate func createAnimationController(
         forTransitionFrom fromViewController: UIViewController,
         to toViewController: UIViewController
@@ -190,13 +152,9 @@ extension InteractiveTransitioningContainer {
         ) -> UIViewControllerInteractiveTransitioning? {
         
         if let animator = animator {
-            
             return containerDelegate?.interactiveTransitioningContainer(self, interactionControllerFor: animator)
-            
         } else {
-            
             return nil
-            
         }
         
     }
@@ -207,49 +165,84 @@ extension InteractiveTransitioningContainer {
         using animator: UIViewControllerAnimatedTransitioning?,
         and interactionController: UIViewControllerInteractiveTransitioning?,
         animated: Bool,
-        interactive: Bool)
-        -> InteractiveTransitioningContainerTransitionContext {
+        interactive: Bool
+        ) -> InteractiveTransitioningContainerTransitionContext {
             
-        let animationPositions: InteractiveTransitioningContainerAnimationPositions
-            = createAnimationPositions(
+        let animationPositions = createAnimationPositions(
                 forTransitionFrom: fromViewController, to: toViewController)
         
         let transitionContext = InteractiveTransitioningContainerTransitionContext(in: self.containerView, from: fromViewController, to: toViewController, animationPositions: animationPositions)
-        
         transitionContext.isAnimated = animated && (animator != nil)
-        
         transitionContext.isInteractive = interactive && (interactionController != nil)
         
         // completion block finishes transition lifecycle
         // by contract it has to be called by the animator
-        transitionContext.completionBlock = { (didComplete) -> Void in
+        transitionContext.completionBlock = {[weak transitionContext] (didComplete) -> Void in
             
             if didComplete {
-                
                 self.completeSuccessfulTransition(from: fromViewController, to: toViewController)
-                
             } else {
-                
-                self.completeCancelledTransition(from: fromViewController, to: toViewController)
-                
+                self.completeCancelledTransition(from: fromViewController, to: toViewController, using: transitionContext)
             }
         }
-            
-        transitionCoordinatorField = transitionContext.transitionCoordinator
-            
+        
+        self.transitionCoordinatorField = transitionContext.transitionCoordinator
+        
         return transitionContext
     }
     
+    fileprivate func createAnimationPositions(
+        forTransitionFrom fromViewController: UIViewController,
+        to toViewController: UIViewController
+        ) -> InteractiveTransitioningContainerAnimationPositions {
+        
+        var animationPositions: InteractiveTransitioningContainerAnimationPositions? = containerDelegate?.interactiveTransitioningContainer(self, animationPositionsForTransitionFrom: fromViewController, to: toViewController)
+        
+        if let animationPositions = animationPositions {
+            return animationPositions
+        } else {
+            return InteractiveTransitioningContainerAnimationPositionsImpl(fromInitialFrame: containerView.frame, fromFinalFrame: containerView.frame, toInitialFrame: containerView.frame, toFinalFrame: containerView.frame)
+        }
+    }
 }
 
-// MARK: Methods for running prepared transition
+// MARK: Transition lifecycle methods
 extension InteractiveTransitioningContainer {
+    
+    fileprivate func beginTransition(
+        from fromViewController: UIViewController,
+        to toViewController: UIViewController,
+        animated: Bool) {
+        
+        fromViewController.beginAppearanceTransition(false, animated: animated)
+        fromViewController.willMove(toParentViewController: nil)
+        self.containerDelegate?.interactiveTransitioningContainer(self, releaseLayoutOf: fromViewController, inContainerView: self.containerView)
+        
+        toViewController.beginAppearanceTransition(true, animated: animated)
+        self.addChildViewController(toViewController)
+    }
+    
+    fileprivate func performTransition(
+        using transitionContext: InteractiveTransitioningContainerTransitionContext,
+        animatedBy animationController: UIViewControllerAnimatedTransitioning?,
+        controlledBy interactionController: UIViewControllerInteractiveTransitioning?) {
+        
+        if !transitionContext.isAnimated {
+            performNonAnimatedTransition(
+                using: transitionContext)
+        } else if transitionContext.isInteractive {
+            performInteractiveTransition(
+                using: transitionContext, controlledBy: interactionController!)
+        } else {
+            performAnimatedTransition(
+                using: transitionContext, animatedBy: animationController!)
+        }
+    }
     
     fileprivate func performNonAnimatedTransition(
         using transitionContext: InteractiveTransitioningContainerTransitionContext) {
         
         transitionContext.completeTransition(true)
-        
     }
     
     fileprivate func performAnimatedTransition(
@@ -257,13 +250,10 @@ extension InteractiveTransitioningContainer {
         animatedBy animationController: UIViewControllerAnimatedTransitioning) {
         
         if let interruptibleAnimator = animationController.interruptibleAnimator?(using: transitionContext) {
-            
             interruptibleAnimator.startAnimation()
-            
         } else {
             animationController.animateTransition(using: transitionContext)
         }
-        
     }
     
     fileprivate func performInteractiveTransition(
@@ -271,53 +261,78 @@ extension InteractiveTransitioningContainer {
         controlledBy interactionController: UIViewControllerInteractiveTransitioning) {
         
         interactionController.startInteractiveTransition(transitionContext)
-        
     }
 }
 
-// MARK: Completion calls
+// MARK: Transition completion methods
 extension InteractiveTransitioningContainer {
-
+    
     fileprivate func completeSuccessfulTransition(
-        from fromViewController: UIViewController?,
+        from fromViewController: UIViewController,
         to toViewController: UIViewController) {
         
-        fromViewController?.view.removeFromSuperview()
-        fromViewController?.removeFromParentViewController()
+        completeRemoving(fromViewController: fromViewController)
         
-        self.addAndLayoutToContainerView(viewController: toViewController)
+        completeAdding(toViewController: toViewController)
         
+        finishTransition(to: toViewController)
+    }
+    
+    fileprivate func completeRemoving(fromViewController: UIViewController) {
+        fromViewController.view.removeFromSuperview()
+        fromViewController.removeFromParentViewController()
+        fromViewController.endAppearanceTransition()
+    }
+    
+    fileprivate func completeAdding(toViewController: UIViewController) {
+        if toViewController.view.superview != self.containerView {
+            self.containerView.addSubview(toViewController.view)
+        }
+        self.containerDelegate?.interactiveTransitioningContainer(self, layoutIfNotAlready: toViewController, inContainerView: self.containerView)
         toViewController.didMove(toParentViewController: self)
-        
-        self.finishTransition(to: toViewController)
-        
+        toViewController.endAppearanceTransition()
     }
     
     fileprivate func completeCancelledTransition(
         from fromViewController: UIViewController,
-        to toViewController: UIViewController) {
+        to toViewController: UIViewController,
+        using transitionContext: InteractiveTransitioningContainerTransitionContext?) {
         
-        toViewController.view.removeFromSuperview()
+        let animated = transitionContext?.isAnimated ?? false
         
-        // defensive renewal of old fromView, if animator is correctly implemented, this is unnecessary
-        self.addAndLayoutToContainerView(viewController: fromViewController)
+        cancelAdding(toViewController: toViewController, animated: animated)
         
-        // do I need this to play nice in context of UIKit?
-        // fromViewController.didMove(toParentViewController: self)
+        cancelRemoving(fromViewController: fromViewController, animated: animated)
         
         self.finishTransition(to: fromViewController)
-        
     }
     
-    fileprivate func addAndLayoutToContainerView(viewController: UIViewController) {
-        
-        if viewController.view.superview != self.containerView {
-            self.containerView.addSubview(viewController.view)
-        }
-        
-        self.containerDelegate?.interactiveTransitioningContainer(self, layoutIfNotAlready: viewController, inContainerView: self.containerView)
-        
+    fileprivate func cancelAdding(toViewController: UIViewController, animated: Bool) {
+        toViewController.beginAppearanceTransition(false, animated: animated)
+        toViewController.view.removeFromSuperview()
+        toViewController.removeFromParentViewController()
+        toViewController.endAppearanceTransition()
     }
+    
+    fileprivate func cancelRemoving(fromViewController: UIViewController, animated: Bool) {
+        fromViewController.beginAppearanceTransition(true, animated: animated)
+        if fromViewController.view.superview != self.containerView {
+            self.containerView.addSubview(fromViewController.view)
+        }
+        self.containerDelegate?.interactiveTransitioningContainer(self, layoutIfNotAlready: fromViewController, inContainerView: self.containerView)
+        fromViewController.didMove(toParentViewController: self)
+        fromViewController.endAppearanceTransition()
+    }
+    
+    
+    fileprivate func finishTransition(to viewController: UIViewController) {
+        
+        self.selectedViewController = viewController
+        
+        let wasCancelled = (self.selectedViewController === viewController)
+        containerDelegate?.interactiveTransitioningContainer(self, transitionFinishedTo: viewController, wasCancelled: wasCancelled)
+    }
+    
 }
 
 // MARK: Transition coordinator

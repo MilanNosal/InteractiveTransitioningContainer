@@ -10,6 +10,9 @@ import UIKit
 
 // Custom percent driven interactive transition object - should be inherited from when used with InteractiveTransitioningContainer
 // I've had some problems with the original implementation of Alek Akstrom, so I use this slight modification
+// This is NOT the recommended approach, left only for backward compatibility with animation
+// controllers that do not provide interruptibleAnimator
+// If it is possible, please use InteractiveTransitionContainerAnimatorBasedPercentDrivenInteractiveTransition instead
 //
 // Credits also to Alek Akstrom
 // - http://www.iosnomad.com/blog/2014/5/12/interactive-custom-container-view-controller-transitions

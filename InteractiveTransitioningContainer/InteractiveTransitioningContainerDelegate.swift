@@ -18,7 +18,7 @@ public protocol InteractiveTransitioningContainerDelegate: class {
     func interactiveTransitioningContainer(
         _ interactiveTransitioningContainer: InteractiveTransitioningContainer,
         animationControllerForTransitionFrom fromViewController: UIViewController,
-        to toViewController: UIViewController) -> UIViewControllerAnimatedTransitioning
+        to toViewController: UIViewController) -> UIViewControllerAnimatedTransitioning?
     
     /// This takes on some responsibility of the transition context, however, without this 
     /// we can hardly keep being fully customizable + working with standard animators

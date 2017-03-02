@@ -65,6 +65,9 @@ extension SwipeToSlideInteractiveTransitioningContainer {
         containerDelegate = self
     }
     
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
 }
 
 extension SwipeToSlideInteractiveTransitioningContainer {
@@ -100,20 +103,16 @@ extension SwipeToSlideInteractiveTransitioningContainer {
 
 extension SwipeToSlideInteractiveTransitioningContainer: InteractiveTransitioningContainerDelegate {
     
-    public func initialViewController(
-        _ interactiveTransitioningContainer: InteractiveTransitioningContainer) -> UIViewController {
-        
+    public func initialViewController(_ interactiveTransitioningContainer: InteractiveTransitioningContainer) -> UIViewController {
         return viewControllers.first!
-        
     }
     
     public func interactiveTransitioningContainer(
         _ interactiveTransitioningContainer: InteractiveTransitioningContainer,
         animationControllerForTransitionFrom fromViewController: UIViewController,
-        to toViewController: UIViewController) -> UIViewControllerAnimatedTransitioning {
+        to toViewController: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         
         return animator
-        
     }
     
     public func interactiveTransitioningContainer(

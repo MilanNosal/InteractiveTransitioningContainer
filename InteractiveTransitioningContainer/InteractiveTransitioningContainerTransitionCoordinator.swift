@@ -70,12 +70,12 @@ class InteractiveTransitioningContainerTransitionCoordinator: NSObject, UIViewCo
         
         self.containerView = containerView
         self.viewControllers = [
-            UITransitionContextViewControllerKey.from:fromViewController,
-            UITransitionContextViewControllerKey.to:toViewController
+            UITransitionContextViewControllerKey.from: fromViewController,
+            UITransitionContextViewControllerKey.to: toViewController
         ]
         self.views = [
-            UITransitionContextViewKey.from:fromViewController.view,
-            UITransitionContextViewKey.to:toViewController.view
+            UITransitionContextViewKey.from: fromViewController.view,
+            UITransitionContextViewKey.to: toViewController.view
         ]
         
         super.init()
