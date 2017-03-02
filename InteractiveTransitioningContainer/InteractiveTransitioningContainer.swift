@@ -214,12 +214,12 @@ extension InteractiveTransitioningContainer {
         to toViewController: UIViewController,
         animated: Bool) {
         
-        fromViewController.beginAppearanceTransition(false, animated: animated)
         fromViewController.willMove(toParentViewController: nil)
+        fromViewController.beginAppearanceTransition(false, animated: animated)
         self.containerDelegate?.interactiveTransitioningContainer(self, releaseLayoutOf: fromViewController, inContainerView: self.containerView)
         
-        toViewController.beginAppearanceTransition(true, animated: animated)
         self.addChildViewController(toViewController)
+        toViewController.beginAppearanceTransition(true, animated: animated)
     }
     
     fileprivate func performTransition(
