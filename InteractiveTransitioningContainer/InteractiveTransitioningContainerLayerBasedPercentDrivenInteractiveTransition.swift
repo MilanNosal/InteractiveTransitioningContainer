@@ -38,11 +38,6 @@ public class InteractiveTransitionContainerLayerBasedPercentDrivenInteractiveTra
     }
     
     fileprivate var displayLink: CADisplayLink?
-    
-}
-
-// MARK:
-extension InteractiveTransitionContainerLayerBasedPercentDrivenInteractiveTransition {
 
     public override func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
         
@@ -78,11 +73,9 @@ extension InteractiveTransitionContainerLayerBasedPercentDrivenInteractiveTransi
         
         self.completeTransition()
     }
-}
 
-// MARK: Internal methods
-extension InteractiveTransitionContainerLayerBasedPercentDrivenInteractiveTransition {
-    
+    // MARK: Internal methods
+
     fileprivate func completeTransition() {
         
         displayLink = CADisplayLink(target: self, selector: #selector(InteractiveTransitionContainerLayerBasedPercentDrivenInteractiveTransition.tickAnimation))

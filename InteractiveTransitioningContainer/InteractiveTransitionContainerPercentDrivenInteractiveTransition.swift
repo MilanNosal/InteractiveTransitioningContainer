@@ -20,11 +20,7 @@ public class InteractiveTransitionContainerPercentDrivenInteractiveTransition: N
     
     var percentComplete: CGFloat {
         didSet {
-            
-            // TODO test ci ide
-            
             transitionContext!.updateInteractiveTransition(percentComplete)
-            
         }
     }
     
@@ -49,10 +45,8 @@ public class InteractiveTransitionContainerPercentDrivenInteractiveTransition: N
         percentComplete = 0
         super.init()
     }
-}
 
-// MARK: Transition lifecycle
-extension InteractiveTransitionContainerPercentDrivenInteractiveTransition {
+    // MARK: Transition lifecycle
     
     public func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
         
@@ -63,9 +57,7 @@ extension InteractiveTransitionContainerPercentDrivenInteractiveTransition {
         }
         
         self.state = .isInteracting
-        
         self.transitionContext = transitionContext
-        
     }
     
     public func updateInteractiveTransition(percentComplete: CGFloat) {
@@ -87,9 +79,7 @@ extension InteractiveTransitionContainerPercentDrivenInteractiveTransition {
         }
         
         self.state = .isInTearDown
-        
         transitionContext!.cancelInteractiveTransition()
-        
     }
     
     public func finishInteractiveTransition() {
@@ -99,14 +89,10 @@ extension InteractiveTransitionContainerPercentDrivenInteractiveTransition {
         }
         
         self.state = .isInTearDown
-        
         self.transitionContext!.finishInteractiveTransition()
-        
     }
-}
 
-// MARK: Internal methods
-extension InteractiveTransitionContainerPercentDrivenInteractiveTransition {
+    // MARK: Internal methods
     
     func interactiveTransitionCompleted() {
         

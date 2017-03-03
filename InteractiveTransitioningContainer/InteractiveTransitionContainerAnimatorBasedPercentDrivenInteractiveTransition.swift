@@ -15,17 +15,14 @@ public class InteractiveTransitionContainerAnimatorBasedPercentDrivenInteractive
     
     override var percentComplete: CGFloat {
         didSet {
-            propertyAnimator!.fractionComplete = percentComplete
+            interruptibleAnimator!.fractionComplete = percentComplete
         }
     }
     
-    // MARK: New implicitlyAnimating controller
-    var propertyAnimator: UIViewImplicitlyAnimating?
-    
-}
+    // MARK: - New implicitlyAnimating controller
+    var interruptibleAnimator: UIViewImplicitlyAnimating?
 
-// MARK: Transition lifecycle
-extension InteractiveTransitionContainerAnimatorBasedPercentDrivenInteractiveTransition {
+    // MARK: - Transition lifecycle
     
     public override func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
         
@@ -56,11 +53,11 @@ extension InteractiveTransitionContainerAnimatorBasedPercentDrivenInteractiveTra
         
         super.cancelInteractiveTransition()
         
-        self.propertyAnimator!.isReversed = true
+        self.interruptibleAnimator!.isReversed = true
         
-        self.propertyAnimator!.continueAnimation!(
+        self.interruptibleAnimator!.continueAnimation!(
             withTimingParameters: nil,
-            durationFactor: self.propertyAnimator!.fractionComplete)
+            durationFactor: self.interruptibleAnimator!.fractionComplete)
         
     }
     
@@ -72,21 +69,19 @@ extension InteractiveTransitionContainerAnimatorBasedPercentDrivenInteractiveTra
         
         super.finishInteractiveTransition()
         
-        self.propertyAnimator!.continueAnimation!(
+        self.interruptibleAnimator!.continueAnimation!(
             withTimingParameters: nil,
-            durationFactor: (1 - self.propertyAnimator!.fractionComplete))
+            durationFactor: (1 - self.interruptibleAnimator!.fractionComplete))
         
     }
-}
 
-// MARK: Internal methods
-extension InteractiveTransitionContainerAnimatorBasedPercentDrivenInteractiveTransition {
-    
+    // MARK: - Internal methods
+
     override func interactiveTransitionCompleted() {
         
         super.interactiveTransitionCompleted()
         
-        self.propertyAnimator = nil
+        self.interruptibleAnimator = nil
         
     }
 }
