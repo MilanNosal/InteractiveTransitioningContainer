@@ -32,16 +32,12 @@ public class InteractiveTransitionContainerAnimatorBasedPercentDrivenInteractive
         
         super.startInteractiveTransition(transitionContext)
         
-        self.propertyAnimator = self.animator!.interruptibleAnimator!(using: transitionContext)
+        self.interruptibleAnimator = self.animator!.interruptibleAnimator!(using: transitionContext)
         
-        self.propertyAnimator!.startAnimation()
-        
-        self.propertyAnimator!.pauseAnimation()
-        
-        self.propertyAnimator!.addCompletion!({ (position) in
-            
+        self.interruptibleAnimator!.startAnimation()
+        self.interruptibleAnimator!.pauseAnimation()
+        self.interruptibleAnimator!.addCompletion!({ (position) in
             self.interactiveTransitionCompleted()
-            
         })
     }
     
