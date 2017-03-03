@@ -101,6 +101,12 @@ extension InteractiveTransitioningContainerTransitionCoordinator {
         }
     }
     
+    func notifyThatInteractionStopped() {
+        self.isInteractive = false
+        notifyInteractionChanged()
+        notifyInteractionEnded()
+    }
+    
     func notifyInteractionChanged() {
         changeNotificationCallbacks.forEach { (notificationCallbacks) in
             notificationCallbacks(self)

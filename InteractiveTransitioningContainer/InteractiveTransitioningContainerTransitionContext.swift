@@ -123,10 +123,12 @@ extension InteractiveTransitioningContainerTransitionContext {
     }
     
     func finishInteractiveTransition() {
+        self.transitionCoordinator.notifyThatInteractionStopped()
         self.transitionWasCancelled = false
     }
     
     func cancelInteractiveTransition() {
+        self.transitionCoordinator.notifyThatInteractionStopped()
         self.transitionWasCancelled = true
     }
     
