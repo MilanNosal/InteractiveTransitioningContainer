@@ -227,6 +227,8 @@ extension InteractiveTransitioningContainer {
         animatedBy animationController: UIViewControllerAnimatedTransitioning?,
         controlledBy interactionController: UIViewControllerInteractiveTransitioning?) {
         
+        prepareAnimationControllerIfNeeded(animationController, using: transitionContext)
+        
         if !transitionContext.isAnimated {
             performNonAnimatedTransition(
                 using: transitionContext)
@@ -262,6 +264,24 @@ extension InteractiveTransitioningContainer {
         
         interactionController.startInteractiveTransition(transitionContext)
     }
+    
+    fileprivate func prepareAnimationControllerIfNeeded(
+        _ animationController: UIViewControllerAnimatedTransitioning?,
+        using transitionContext: InteractiveTransitioningContainerTransitionContext) {
+        
+        guard let interruptibleAnimator = animationController?.interruptibleAnimator?(using: transitionContext) else {
+            return
+        }
+        
+        interruptibleAnimator.addAnimations! { [weak self] in
+            self?.transitionCoordinatorField?.performAlongsideAnimations()
+        }
+        
+        interruptibleAnimator.addCompletion!({ [weak self] (animatingPositions) in
+            self?.transitionCoordinatorField?.completeTransition()
+        })
+    }
+    
 }
 
 // MARK: Transition completion methods

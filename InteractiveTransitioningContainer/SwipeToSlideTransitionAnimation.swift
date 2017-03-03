@@ -54,6 +54,9 @@ class SwipeToSlideTransitionAnimation: NSObject, UIViewControllerAnimatedTransit
         })
     }
     
+    /// We rely on the implementation to return the same interruptible animator during the
+    /// duration of the transition - please, keep that in mind when implementing your own
+    /// animators for usage with our InteractiveTransitioningContainer
     func interruptibleAnimator(using transitionContext: UIViewControllerContextTransitioning) -> UIViewImplicitlyAnimating {
         
         if let interruptibleAnimator = self.interruptibleAnimator {
