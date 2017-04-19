@@ -12,8 +12,15 @@ public protocol SwipeToSlideInteractiveTransitioningContainerDelegate: class {
     
     func swipeToSlideInteractiveTransitioningContainer(
         _ swipeToSlideInteractiveTransitioningContainer: SwipeToSlideInteractiveTransitioningContainer,
-        didFinishTransitionTo viewController: UIViewController,
+        didFinishTransitionToIndex selectedIndex: Int,
         wasCancelled: Bool)
+    
+    
+    func swipeToSlideInteractiveTransitioningContainer(
+        _ swipeToSlideInteractiveTransitioningContainer: SwipeToSlideInteractiveTransitioningContainer,
+        willTransitionFromIndex fromIndex: Int,
+        to toIndex: Int,
+        coordinatedBy transitionCoordinator: UIViewControllerTransitionCoordinator)
     
 }
 
@@ -51,10 +58,6 @@ public class SwipeToSlideInteractiveTransitioningContainer: InteractiveTransitio
         fatalError("init(coder:) has not been implemented")
     }
     
-}
-
-extension SwipeToSlideInteractiveTransitioningContainer {
-    
     override public func loadView() {
         super.loadView()
         
@@ -73,9 +76,7 @@ extension SwipeToSlideInteractiveTransitioningContainer {
 extension SwipeToSlideInteractiveTransitioningContainer {
     
     func animatorFactory() -> UIViewControllerAnimatedTransitioning {
-        
         return SwipeToSlideTransitionAnimation()
-        
     }
     
     func interactionControllerFactory(in view: UIView) -> SwipeToSlidePanGestureInteractiveTransition {
@@ -147,10 +148,22 @@ extension SwipeToSlideInteractiveTransitioningContainer: InteractiveTransitionin
     
     public func interactiveTransitioningContainer(
         _ interactiveTransitioningContainer: InteractiveTransitioningContainer,
+        willTransitionFrom fromViewController: UIViewController,
+        to toViewController: UIViewController,
+        coordinatedBy transitionCoordinator: UIViewControllerTransitionCoordinator) {
+        
+        let fromIndex = viewControllers.index(of: fromViewController)!
+        let toIndex = viewControllers.index(of: toViewController)!
+        delegate?.swipeToSlideInteractiveTransitioningContainer(self, willTransitionFromIndex: fromIndex, to: toIndex, coordinatedBy: transitionCoordinator)
+    }
+    
+    public func interactiveTransitioningContainer(
+        _ interactiveTransitioningContainer: InteractiveTransitioningContainer,
         transitionFinishedTo viewController: UIViewController,
         wasCancelled: Bool) {
         
-        delegate?.swipeToSlideInteractiveTransitioningContainer(self, didFinishTransitionTo: viewController, wasCancelled: wasCancelled)
+        let selectedIndex = viewControllers.index(of: viewController)!
+        delegate?.swipeToSlideInteractiveTransitioningContainer(self, didFinishTransitionToIndex: selectedIndex, wasCancelled: wasCancelled)
         
     }
 }

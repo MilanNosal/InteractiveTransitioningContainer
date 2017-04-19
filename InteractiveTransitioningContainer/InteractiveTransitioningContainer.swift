@@ -126,6 +126,8 @@ extension InteractiveTransitioningContainer {
             using: animationController, and: interactionController,
             animated: animated, interactive: interactive)
         
+        self.containerDelegate?.interactiveTransitioningContainer(self, willTransitionFrom: fromViewController, to: toViewController, coordinatedBy: transitionContext.transitionCoordinator)
+        
         beginTransition(from: fromViewController, to: toViewController, animated: transitionContext.isAnimated)
         
         performTransition(using: transitionContext, animatedBy: animationController, controlledBy: interactionController)
@@ -196,7 +198,7 @@ extension InteractiveTransitioningContainer {
         to toViewController: UIViewController
         ) -> InteractiveTransitioningContainerAnimationPositions {
         
-        var animationPositions: InteractiveTransitioningContainerAnimationPositions? = containerDelegate?.interactiveTransitioningContainer(self, animationPositionsForTransitionFrom: fromViewController, to: toViewController)
+        let animationPositions: InteractiveTransitioningContainerAnimationPositions? = containerDelegate?.interactiveTransitioningContainer(self, animationPositionsForTransitionFrom: fromViewController, to: toViewController)
         
         if let animationPositions = animationPositions {
             return animationPositions

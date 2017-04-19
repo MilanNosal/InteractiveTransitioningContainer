@@ -45,12 +45,18 @@ public protocol InteractiveTransitioningContainerDelegate: class {
         _ interactiveTransitioningContainer: InteractiveTransitioningContainer,
         releaseLayoutOf viewController: UIViewController, inContainerView containerView: UIView)
     
-    /// Callback to get informed about finishing the transition
+    /// Notification callback to get informed about finishing the transition
     func interactiveTransitioningContainer(
         _ interactiveTransitioningContainer: InteractiveTransitioningContainer,
         transitionFinishedTo viewController: UIViewController,
         wasCancelled: Bool)
     
+    /// Notification callback to provide the delegate with a transition coordinator object that can be used to add alongside animations for the transition
+    func interactiveTransitioningContainer(
+        _ interactiveTransitioningContainer: InteractiveTransitioningContainer,
+        willTransitionFrom fromViewController: UIViewController,
+        to toViewController: UIViewController,
+        coordinatedBy transitionCoordinator: UIViewControllerTransitionCoordinator)
 }
 
 
@@ -62,7 +68,7 @@ extension InteractiveTransitioningContainerDelegate {
         _ interactiveTransitioningContainer: InteractiveTransitioningContainer,
         layoutIfNotAlready viewController: UIViewController, inContainerView containerView: UIView) {
         
-        viewController.view.frame = containerView.frame
+        viewController.view.frame = containerView.bounds
         
     }
     
@@ -78,6 +84,15 @@ extension InteractiveTransitioningContainerDelegate {
         _ interactiveTransitioningContainer: InteractiveTransitioningContainer,
         transitionFinishedTo viewController: UIViewController,
         wasCancelled: Bool) {
+        
+    }
+    
+    /// Empty default implementation
+    public func interactiveTransitioningContainer(
+        _ interactiveTransitioningContainer: InteractiveTransitioningContainer,
+        willTransitionFrom fromViewController: UIViewController,
+        to toViewController: UIViewController,
+        coordinatedBy transitionCoordinator: UIViewControllerTransitionCoordinator) {
         
     }
 }
