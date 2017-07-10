@@ -20,7 +20,7 @@ public protocol InteractiveTransitioningContainerAnimationPositions {
     
 }
 
-public struct InteractiveTransitioningContainerAnimationPositionsImpl: InteractiveTransitioningContainerAnimationPositions {
+public struct InteractiveTransitioningContainerAnimationPositionsImpl: InteractiveTransitioningContainerAnimationPositions, CustomStringConvertible {
     
     public var fromInitialFrame: CGRect
     
@@ -30,4 +30,7 @@ public struct InteractiveTransitioningContainerAnimationPositionsImpl: Interacti
     
     public var toFinalFrame: CGRect
     
+    public var description: String {
+        return "Old going from (\(fromInitialFrame)) to (\(fromFinalFrame))\nNew going from (\(toInitialFrame)) to (\(toFinalFrame))"
+    }
 }

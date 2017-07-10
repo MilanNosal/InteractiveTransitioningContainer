@@ -7,9 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		99301D751EB0D74100E0BD98 /* SwipeToSlideTabBarTitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99301D741EB0D74100E0BD98 /* SwipeToSlideTabBarTitleViewController.swift */; };
+		99301D771EB0DD5C00E0BD98 /* SwipeToSlideTabBarTitleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99301D761EB0DD5C00E0BD98 /* SwipeToSlideTabBarTitleProtocol.swift */; };
+		99301D791EB1453700E0BD98 /* SwipeToSlideTabBarMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99301D781EB1453700E0BD98 /* SwipeToSlideTabBarMenuViewController.swift */; };
+		9976271B1E6D7998004A3B84 /* SwipeToSlideTabBarChildController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9976271A1E6D7998004A3B84 /* SwipeToSlideTabBarChildController.swift */; };
+		9976271E1E6D7EDF004A3B84 /* SwipeToSlideTabBarChildControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9976271D1E6D7EDF004A3B84 /* SwipeToSlideTabBarChildControllerTests.swift */; };
+		997627201E6D85D4004A3B84 /* SwipeToSlideTabBarContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9976271F1E6D85D4004A3B84 /* SwipeToSlideTabBarContainerTests.swift */; };
+		997627221E6D9615004A3B84 /* SwipeToSlideTabBarContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997627211E6D9615004A3B84 /* SwipeToSlideTabBarContainer.swift */; };
 		997DD6A61E5F284200FB5065 /* InteractiveTransitionContainerAnimatorBasedPercentDrivenInteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997DD6A51E5F284200FB5065 /* InteractiveTransitionContainerAnimatorBasedPercentDrivenInteractiveTransition.swift */; };
 		997DD6A81E5F2D1900FB5065 /* InteractiveTransitionContainerPercentDrivenInteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997DD6A71E5F2D1900FB5065 /* InteractiveTransitionContainerPercentDrivenInteractiveTransition.swift */; };
 		997DD6AA1E5F2D7400FB5065 /* InteractiveTransitionControllerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997DD6A91E5F2D7400FB5065 /* InteractiveTransitionControllerState.swift */; };
+		99958AA41E9E35D600E1F81E /* SwipeToSlideTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99958AA31E9E35D600E1F81E /* SwipeToSlideTabBarViewController.swift */; };
 		999DCBF81E34C9BC00311D96 /* InteractiveTransitioningContainer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 999DCBEE1E34C9BC00311D96 /* InteractiveTransitioningContainer.framework */; };
 		999DCBFD1E34C9BC00311D96 /* InteractiveTransitioningContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999DCBFC1E34C9BC00311D96 /* InteractiveTransitioningContainerTests.swift */; };
 		999DCBFF1E34C9BC00311D96 /* InteractiveTransitioningContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 999DCBF11E34C9BC00311D96 /* InteractiveTransitioningContainer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -41,10 +49,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		99301D741EB0D74100E0BD98 /* SwipeToSlideTabBarTitleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeToSlideTabBarTitleViewController.swift; sourceTree = "<group>"; };
+		99301D761EB0DD5C00E0BD98 /* SwipeToSlideTabBarTitleProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeToSlideTabBarTitleProtocol.swift; sourceTree = "<group>"; };
+		99301D781EB1453700E0BD98 /* SwipeToSlideTabBarMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeToSlideTabBarMenuViewController.swift; sourceTree = "<group>"; };
+		9976271A1E6D7998004A3B84 /* SwipeToSlideTabBarChildController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeToSlideTabBarChildController.swift; sourceTree = "<group>"; };
+		9976271D1E6D7EDF004A3B84 /* SwipeToSlideTabBarChildControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeToSlideTabBarChildControllerTests.swift; sourceTree = "<group>"; };
+		9976271F1E6D85D4004A3B84 /* SwipeToSlideTabBarContainerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeToSlideTabBarContainerTests.swift; sourceTree = "<group>"; };
+		997627211E6D9615004A3B84 /* SwipeToSlideTabBarContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeToSlideTabBarContainer.swift; sourceTree = "<group>"; };
 		997DD6A51E5F284200FB5065 /* InteractiveTransitionContainerAnimatorBasedPercentDrivenInteractiveTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteractiveTransitionContainerAnimatorBasedPercentDrivenInteractiveTransition.swift; sourceTree = "<group>"; };
 		997DD6A71E5F2D1900FB5065 /* InteractiveTransitionContainerPercentDrivenInteractiveTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteractiveTransitionContainerPercentDrivenInteractiveTransition.swift; sourceTree = "<group>"; };
 		997DD6A91E5F2D7400FB5065 /* InteractiveTransitionControllerState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteractiveTransitionControllerState.swift; sourceTree = "<group>"; };
 		9983744C1E4A834400E2EC33 /* InteractiveTransitioningContainerTransitionCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteractiveTransitioningContainerTransitionCoordinator.swift; sourceTree = "<group>"; };
+		99958AA31E9E35D600E1F81E /* SwipeToSlideTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeToSlideTabBarViewController.swift; sourceTree = "<group>"; };
 		999DCBEE1E34C9BC00311D96 /* InteractiveTransitioningContainer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = InteractiveTransitioningContainer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		999DCBF11E34C9BC00311D96 /* InteractiveTransitioningContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InteractiveTransitioningContainer.h; sourceTree = "<group>"; };
 		999DCBF21E34C9BC00311D96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -85,6 +101,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9976271C1E6D7EB4004A3B84 /* SwipeToSlideTabBarContainer */ = {
+			isa = PBXGroup;
+			children = (
+				9976271D1E6D7EDF004A3B84 /* SwipeToSlideTabBarChildControllerTests.swift */,
+				9976271F1E6D85D4004A3B84 /* SwipeToSlideTabBarContainerTests.swift */,
+			);
+			name = SwipeToSlideTabBarContainer;
+			sourceTree = "<group>";
+		};
 		997DD6A41E5F278100FB5065 /* InteractiveTransitionController */ = {
 			isa = PBXGroup;
 			children = (
@@ -146,7 +171,7 @@
 				998219C61E3629DC00BC209A /* Core */,
 				998219C71E3629F700BC209A /* SwipeToSlideImpl */,
 				99F1B5871E48F15E0012A198 /* SwipeToSlideAutolayoutImpl */,
-				99B0B3671E49EA15008FBDA1 /* SwipeToSlideTabBarController */,
+				99B0B3671E49EA15008FBDA1 /* SwipeToSlideTabBarContainer */,
 			);
 			path = InteractiveTransitioningContainer;
 			sourceTree = "<group>";
@@ -154,17 +179,24 @@
 		999DCBFB1E34C9BC00311D96 /* InteractiveTransitioningContainerTests */ = {
 			isa = PBXGroup;
 			children = (
+				9976271C1E6D7EB4004A3B84 /* SwipeToSlideTabBarContainer */,
 				999DCBFC1E34C9BC00311D96 /* InteractiveTransitioningContainerTests.swift */,
 				999DCBFE1E34C9BC00311D96 /* Info.plist */,
 			);
 			path = InteractiveTransitioningContainerTests;
 			sourceTree = "<group>";
 		};
-		99B0B3671E49EA15008FBDA1 /* SwipeToSlideTabBarController */ = {
+		99B0B3671E49EA15008FBDA1 /* SwipeToSlideTabBarContainer */ = {
 			isa = PBXGroup;
 			children = (
+				9976271A1E6D7998004A3B84 /* SwipeToSlideTabBarChildController.swift */,
+				997627211E6D9615004A3B84 /* SwipeToSlideTabBarContainer.swift */,
+				99958AA31E9E35D600E1F81E /* SwipeToSlideTabBarViewController.swift */,
+				99301D781EB1453700E0BD98 /* SwipeToSlideTabBarMenuViewController.swift */,
+				99301D761EB0DD5C00E0BD98 /* SwipeToSlideTabBarTitleProtocol.swift */,
+				99301D741EB0D74100E0BD98 /* SwipeToSlideTabBarTitleViewController.swift */,
 			);
-			name = SwipeToSlideTabBarController;
+			name = SwipeToSlideTabBarContainer;
 			sourceTree = "<group>";
 		};
 		99F1B5871E48F15E0012A198 /* SwipeToSlideAutolayoutImpl */ = {
@@ -290,21 +322,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				99301D771EB0DD5C00E0BD98 /* SwipeToSlideTabBarTitleProtocol.swift in Sources */,
 				999E28131E4CBC9D00501351 /* InteractiveTransitioningContainerChild.swift in Sources */,
 				99F1B58D1E4912D90012A198 /* UIView.swift in Sources */,
 				999DCC131E352B0C00311D96 /* InteractiveTransitioningContainerLayerBasedPercentDrivenInteractiveTransition.swift in Sources */,
+				997627221E6D9615004A3B84 /* SwipeToSlideTabBarContainer.swift in Sources */,
 				999DCC091E34D3F200311D96 /* InteractiveTransitioningContainer.swift in Sources */,
 				999DCC0F1E352A6E00311D96 /* InteractiveTransitioningContainerTransitionContext.swift in Sources */,
+				9976271B1E6D7998004A3B84 /* SwipeToSlideTabBarChildController.swift in Sources */,
 				99F1B58F1E4917620012A198 /* SwipeToSlideAutolayoutPanGestureInteractiveTransition.swift in Sources */,
 				999DCC0B1E34D43600311D96 /* InteractiveTransitioningContainerDelegate.swift in Sources */,
 				999DCC0D1E352A3200311D96 /* SwipeToSlideTransitionAnimation.swift in Sources */,
 				99A63C331E438121003502C7 /* SwipeToSlideInteractiveTransitioningContainer.swift in Sources */,
 				99F1B5891E48F1A40012A198 /* SwipeToSlideAutolayoutTransitionAnimation.swift in Sources */,
+				99958AA41E9E35D600E1F81E /* SwipeToSlideTabBarViewController.swift in Sources */,
+				99301D791EB1453700E0BD98 /* SwipeToSlideTabBarMenuViewController.swift in Sources */,
 				99F1B5911E4918260012A198 /* SwipeToSlideAutolayoutInteractiveTransitioningContainer.swift in Sources */,
 				999DCC111E352AC400311D96 /* SwipeToSlidePanGestureInteractiveTransition.swift in Sources */,
 				997DD6A61E5F284200FB5065 /* InteractiveTransitionContainerAnimatorBasedPercentDrivenInteractiveTransition.swift in Sources */,
 				99CCD57B1E520C4900F499DB /* InteractiveTransitioningContainerTransitionCoordinator.swift in Sources */,
 				997DD6AA1E5F2D7400FB5065 /* InteractiveTransitionControllerState.swift in Sources */,
+				99301D751EB0D74100E0BD98 /* SwipeToSlideTabBarTitleViewController.swift in Sources */,
 				99B87E341E4350DD007F26F8 /* InteractiveTransitioningContainerAnimationPositions.swift in Sources */,
 				997DD6A81E5F2D1900FB5065 /* InteractiveTransitionContainerPercentDrivenInteractiveTransition.swift in Sources */,
 			);
@@ -314,6 +352,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9976271E1E6D7EDF004A3B84 /* SwipeToSlideTabBarChildControllerTests.swift in Sources */,
+				997627201E6D85D4004A3B84 /* SwipeToSlideTabBarContainerTests.swift in Sources */,
 				99CCD57C1E520C4D00F499DB /* InteractiveTransitioningContainerTransitionCoordinator.swift in Sources */,
 				999DCBFD1E34C9BC00311D96 /* InteractiveTransitioningContainerTests.swift in Sources */,
 			);
