@@ -64,6 +64,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SwipeToSlideInteractiveTr
 
 If `SwipeToSlideInteractiveTransitioningContainer` is not what you are looking for, you can always subclass `InteractiveTransitioningContainer` yourself using `SwipeToSlideInteractiveTransitioningContainer` as an example. If you should decide to do so, we recommend to start by reading the two articles mentioned in Acknowledgements below.
 
+## Installation using CocoaPods
+
+To install using CocoaPods, just add the following line to your Podfile:
+
+```
+pod 'InteractiveTransitioningContainer'
+```
+
 ## Acknowledgements
 
 Joachim Bondo wrote a great article about [Custom Container View Controller Transitions](https://www.objc.io/issues/12-animations/custom-container-view-controller-transitions/). We recommend reading it as first resource, if you want to implement your own custom container (even when using our skeleton).
