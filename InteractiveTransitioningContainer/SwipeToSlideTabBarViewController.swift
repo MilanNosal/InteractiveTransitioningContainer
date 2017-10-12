@@ -52,7 +52,7 @@ class SwipeToSlideTabBarViewController: UIViewController {
 //        self.view.backgroundColor = .clear
 //        self.view.isOpaque = true
         
-        view.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        view.heightAnchor.constraint(equalToConstant: 100).isActive = true
     }
 
 }

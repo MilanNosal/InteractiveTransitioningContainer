@@ -25,8 +25,6 @@ class SwipeToSlidePanGestureInteractiveTransition: InteractiveTransitionContaine
     // This block gets run when the gesture recognizer start recognizing a pan. Inside, the start of a transition can be triggered.
     private let gestureRecognizedBlock: ((_ recognizer: UIPanGestureRecognizer) -> Void)
     
-    
-    
     init(in view: UIView, progressThreshold: CGFloat = 0.35, velocityOverrideThreshold: CGFloat = 550, recognizedBlock: @escaping ((_ recognizer: UIPanGestureRecognizer) -> Void)) {
         
         self.progressNeeded = progressThreshold

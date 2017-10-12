@@ -15,13 +15,13 @@ import UIKit
 // - https://www.objc.io/issues/12-animations/custom-container-view-controller-transitions/
 // and Alek Akstrom
 // - http://www.iosnomad.com/blog/2014/5/12/interactive-custom-container-view-controller-transitions
-public class InteractiveTransitioningContainer: UIViewController {
+open class InteractiveTransitioningContainer: UIViewController {
     
     /// Delegate is used for managing all the custom behavior
     /// For the initial VC to be set up correctly, provide the delegate before 
     /// viewDidLoad is called (either in loadView, or before calling super.viewDidLoad in subclass)
     /// Reference to containerDelegate is weak
-    weak var containerDelegate: InteractiveTransitioningContainerDelegate?
+    open weak var containerDelegate: InteractiveTransitioningContainerDelegate?
     
     fileprivate(set) public var selectedViewController: UIViewController!
     
@@ -29,39 +29,42 @@ public class InteractiveTransitioningContainer: UIViewController {
     
     fileprivate weak var transitionCoordinatorField: InteractiveTransitioningContainerTransitionCoordinator?
     
-    public func transition(to viewController: UIViewController, animated: Bool = true, interactive: Bool = false) {
-        
+    public init() {
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    public convenience init(withContainerDelegate containerDelegate: InteractiveTransitioningContainerDelegate) {
+        self.init()
+        self.containerDelegate = containerDelegate
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    open func transition(to viewController: UIViewController, animated: Bool = true, interactive: Bool = false) {
         guard selectedViewController != nil else {
             self.transition(toInitialViewController: viewController)
             return
         }
         
         self.transition(from: selectedViewController, to: viewController, animated: animated, interactive: interactive)
-        
     }
-    
-}
 
-// MARK: Initialization
-extension InteractiveTransitioningContainer {
+    // MARK: Initialization
     
     // It is required that you call super.loadView at the beginning of overriding implementation of loadView
-    public override func loadView() {
-        
+    open override func loadView() {
         super.loadView()
         
         self.containerView = self.view
-        
-        layoutComponents()
-        
-        setAtributes()
-        
-        applyConstraints()
-        
+        setupHierarchy()
+        setupAtributes()
+        setupLayout()
     }
     
     /// If the delegate is already set, the initialViewController is loaded into view
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         
         if let initialViewController = containerDelegate?.initialViewController(self) {
@@ -69,25 +72,47 @@ extension InteractiveTransitioningContainer {
         }
     }
     
-    private func layoutComponents() {
+    private func setupHierarchy() {
         
     }
     
-    private func setAtributes() {
-        
+    private func setupAtributes() {
         view.backgroundColor = .clear
         view.isOpaque = true
+    }
+    
+    fileprivate func setupLayout() {
         
     }
     
-    fileprivate func applyConstraints() {
+    // MARK: Transition coordinator
+    open override var transitionCoordinator: UIViewControllerTransitionCoordinator? {
+        return transitionCoordinatorField
+    }
+    
+    // MARK: status bar overrides - it delegates status bar appearance to child VC
+    open override var prefersStatusBarHidden: Bool {
+        return self.selectedViewController?.prefersStatusBarHidden ?? false
+    }
+    
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        return self.selectedViewController?.preferredStatusBarStyle ?? .default
+    }
+    
+    open override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return self.selectedViewController?.preferredStatusBarUpdateAnimation ?? .fade
+    }
+    
+    // MARK: Layout override
+    open override func viewDidLayoutSubviews() {
+//        self.containerDelegate?.interactiveTransitioningContainer(self, layoutIfNotAlready: selectedViewController, inContainerView: self.containerView)
         
+        super.viewDidLayoutSubviews()
     }
 }
 
 // MARK: Load initial viewControlled child
 extension InteractiveTransitioningContainer {
-    
     fileprivate func transition(toInitialViewController initialViewController: UIViewController) {
         guard self.isViewLoaded else {
             return
@@ -101,12 +126,10 @@ extension InteractiveTransitioningContainer {
         
         finishTransition(to: initialViewController)
     }
-    
 }
 
 // MARK: Transitions between childs
 extension InteractiveTransitioningContainer {
-    
     fileprivate func transition(
         from fromViewController: UIViewController,
         to toViewController: UIViewController,
@@ -146,7 +169,6 @@ extension InteractiveTransitioningContainer {
         // or we won't animate and just use positions driven by the container view
         
         return containerDelegate?.interactiveTransitioningContainer(self, animationControllerForTransitionFrom: fromViewController, to: toViewController)
-        
     }
     
     fileprivate func createInteractionController(
@@ -158,7 +180,6 @@ extension InteractiveTransitioningContainer {
         } else {
             return nil
         }
-        
     }
     
     fileprivate func createTransitionContext(
@@ -180,16 +201,13 @@ extension InteractiveTransitioningContainer {
         // completion block finishes transition lifecycle
         // by contract it has to be called by the animator
         transitionContext.completionBlock = {[weak transitionContext] (didComplete) -> Void in
-            
             if didComplete {
                 self.completeSuccessfulTransition(from: fromViewController, to: toViewController)
             } else {
                 self.completeCancelledTransition(from: fromViewController, to: toViewController, using: transitionContext)
             }
         }
-        
         self.transitionCoordinatorField = transitionContext.transitionCoordinator
-        
         return transitionContext
     }
     
@@ -278,12 +296,10 @@ extension InteractiveTransitioningContainer {
         interruptibleAnimator.addAnimations! { [weak self] in
             self?.transitionCoordinatorField?.performAlongsideAnimations()
         }
-        
         interruptibleAnimator.addCompletion!({ [weak self] (animatingPositions) in
             self?.transitionCoordinatorField?.completeTransition()
         })
     }
-    
 }
 
 // MARK: Transition completion methods
@@ -294,9 +310,7 @@ extension InteractiveTransitioningContainer {
         to toViewController: UIViewController) {
         
         completeRemoving(fromViewController: fromViewController)
-        
         completeAdding(toViewController: toViewController)
-        
         finishTransition(to: toViewController)
     }
     
@@ -321,11 +335,8 @@ extension InteractiveTransitioningContainer {
         using transitionContext: InteractiveTransitioningContainerTransitionContext?) {
         
         let animated = transitionContext?.isAnimated ?? false
-        
         cancelAdding(toViewController: toViewController, animated: animated)
-        
         cancelRemoving(fromViewController: fromViewController, animated: animated)
-        
         self.finishTransition(to: fromViewController)
     }
     
@@ -348,37 +359,9 @@ extension InteractiveTransitioningContainer {
     
     
     fileprivate func finishTransition(to viewController: UIViewController) {
-        
         self.selectedViewController = viewController
         
         let wasCancelled = (self.selectedViewController === viewController)
         containerDelegate?.interactiveTransitioningContainer(self, transitionFinishedTo: viewController, wasCancelled: wasCancelled)
-    }
-    
-}
-
-// MARK: Transition coordinator
-extension InteractiveTransitioningContainer {
-    
-    public override var transitionCoordinator: UIViewControllerTransitionCoordinator?
-    {
-        return transitionCoordinatorField
-    }
-    
-}
-
-// MARK: status bar overrides - it delegates status bar appearance to child VC
-extension InteractiveTransitioningContainer {
-    
-    public override var prefersStatusBarHidden: Bool {
-        return self.selectedViewController?.prefersStatusBarHidden ?? false
-    }
-    
-    public override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.selectedViewController?.preferredStatusBarStyle ?? .default
-    }
-    
-    public override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
-        return self.selectedViewController?.preferredStatusBarUpdateAnimation ?? .fade
     }
 }

@@ -11,45 +11,44 @@ import UIKit
 public class InteractiveTransitionContainerPercentDrivenInteractiveTransition: NSObject, UIViewControllerInteractiveTransitioning {
     
     // MARK: UIPercentDrivenInteractiveTransition fields
-    public var completionCurve: UIViewAnimationCurve = .linear
+    open var completionCurve: UIViewAnimationCurve = .linear
     
     // Duration is delegated to the animator
-    public var duration: CGFloat {
+    open var duration: CGFloat {
         return CGFloat(animator!.transitionDuration(using: transitionContext!))
     }
     
-    var percentComplete: CGFloat {
+    open var percentComplete: CGFloat {
         didSet {
             transitionContext!.updateInteractiveTransition(percentComplete)
         }
     }
     
-    public var completionSpeed: CGFloat = 1
+    open var completionSpeed: CGFloat = 1
     
     
     // MARK: Context fields
-    weak var animator: UIViewControllerAnimatedTransitioning?
+    open weak var animator: UIViewControllerAnimatedTransitioning?
     
-    weak var transitionContext: UIViewControllerContextTransitioning?
+    open weak var transitionContext: UIViewControllerContextTransitioning?
     
     // MARK: Flag reporting the state
     fileprivate(set) var state: InteractiveTransitionControllerState = .isInactive
     
     // MARK: Initializers
-    convenience init(with animator: UIViewControllerAnimatedTransitioning) {
+    public convenience init(with animator: UIViewControllerAnimatedTransitioning) {
         self.init()
         self.animator = animator
     }
     
-    override init() {
+    public override init() {
         percentComplete = 0
         super.init()
     }
 
     // MARK: Transition lifecycle
     
-    public func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
-        
+    open func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
         assert(self.animator != nil, "Animator object must be set on interactive transitioning context.")
         
         guard state == .isInactive else {
@@ -60,8 +59,7 @@ public class InteractiveTransitionContainerPercentDrivenInteractiveTransition: N
         self.transitionContext = transitionContext
     }
     
-    public func updateInteractiveTransition(percentComplete: CGFloat) {
-        
+    open func updateInteractiveTransition(percentComplete: CGFloat) {
         guard state == .isInteracting else {
             return
         }
@@ -69,11 +67,9 @@ public class InteractiveTransitionContainerPercentDrivenInteractiveTransition: N
         let percent = fmin(percentComplete, 1)
         let normalizedPercent = fmax(percent, 0)
         self.percentComplete = normalizedPercent
-        
     }
     
-    public func cancelInteractiveTransition() {
-        
+    open func cancelInteractiveTransition() {
         guard state == .isInteracting else {
             return
         }
@@ -82,8 +78,7 @@ public class InteractiveTransitionContainerPercentDrivenInteractiveTransition: N
         transitionContext!.cancelInteractiveTransition()
     }
     
-    public func finishInteractiveTransition() {
-        
+    open func finishInteractiveTransition() {
         guard state == .isInteracting else {
             return
         }
@@ -94,10 +89,8 @@ public class InteractiveTransitionContainerPercentDrivenInteractiveTransition: N
 
     // MARK: Internal methods
     
-    func interactiveTransitionCompleted() {
-        
+    open func interactiveTransitionCompleted() {
         self.state = .isInactive
-        
     }
 }
 

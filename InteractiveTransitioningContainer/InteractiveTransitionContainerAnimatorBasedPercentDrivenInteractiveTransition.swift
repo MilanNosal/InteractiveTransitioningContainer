@@ -9,11 +9,10 @@
 import UIKit
 
 // Use with animationControllers that provide interruptibleAnimator
-// This is the recommended approach
+// This is my recommended approach
 public class InteractiveTransitionContainerAnimatorBasedPercentDrivenInteractiveTransition: InteractiveTransitionContainerPercentDrivenInteractiveTransition {
     
-    
-    override var percentComplete: CGFloat {
+    open override var percentComplete: CGFloat {
         didSet {
             interruptibleAnimator!.fractionComplete = percentComplete
         }
@@ -24,8 +23,7 @@ public class InteractiveTransitionContainerAnimatorBasedPercentDrivenInteractive
 
     // MARK: - Transition lifecycle
     
-    public override func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
-        
+    open override func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
         guard state == .isInactive else {
             return
         }
@@ -41,8 +39,7 @@ public class InteractiveTransitionContainerAnimatorBasedPercentDrivenInteractive
         })
     }
     
-    public override func cancelInteractiveTransition() {
-        
+    open override func cancelInteractiveTransition() {
         guard state == .isInteracting else {
             return
         }
@@ -50,34 +47,27 @@ public class InteractiveTransitionContainerAnimatorBasedPercentDrivenInteractive
         super.cancelInteractiveTransition()
         
         self.interruptibleAnimator!.isReversed = true
-        
         self.interruptibleAnimator!.continueAnimation!(
             withTimingParameters: nil,
             durationFactor: self.interruptibleAnimator!.fractionComplete)
-        
     }
     
-    public override func finishInteractiveTransition() {
-        
+    open override func finishInteractiveTransition() {
         guard state == .isInteracting else {
             return
         }
         
         super.finishInteractiveTransition()
-        
+    
         self.interruptibleAnimator!.continueAnimation!(
             withTimingParameters: nil,
             durationFactor: (1 - self.interruptibleAnimator!.fractionComplete))
-        
     }
 
     // MARK: - Internal methods
 
-    override func interactiveTransitionCompleted() {
-        
+    open override func interactiveTransitionCompleted() {
         super.interactiveTransitionCompleted()
-        
         self.interruptibleAnimator = nil
-        
     }
 }

@@ -24,9 +24,7 @@ class SwipeToSlideTransitionAnimation: NSObject, UIViewControllerAnimatedTransit
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        guard let fromViewController = transitionContext.viewController(forKey: .from),
-            let toViewController = transitionContext.viewController(forKey: .to),
-            let fromView = transitionContext.view(forKey: .from),
+        guard let fromView = transitionContext.view(forKey: .from),
             let toView = transitionContext.view(forKey: .to)
             else {
                 return
@@ -39,18 +37,14 @@ class SwipeToSlideTransitionAnimation: NSObject, UIViewControllerAnimatedTransit
             in: transitionContext.containerView, positionedBy: animationPositions)
         
         UIView.animate(withDuration: self.transitionDuration(using: transitionContext), delay: 0, options: .curveLinear, animations: {
-            
             self.setupFinalState(
                 from: fromView, to: toView,
                 in: transitionContext.containerView, positionedBy: animationPositions)
-            
         }, completion: {
             (completed) -> Void in
-            
             self.completeAnimation(
                 from: fromView, to: toView,
                 positionedBy: animationPositions, using: transitionContext)
-            
         })
     }
     
@@ -60,13 +54,9 @@ class SwipeToSlideTransitionAnimation: NSObject, UIViewControllerAnimatedTransit
     func interruptibleAnimator(using transitionContext: UIViewControllerContextTransitioning) -> UIViewImplicitlyAnimating {
         
         if let interruptibleAnimator = self.interruptibleAnimator {
-            
             return interruptibleAnimator
-            
         } else {
-            guard let fromViewController = transitionContext.viewController(forKey: .from),
-                let toViewController = transitionContext.viewController(forKey: .to),
-                let fromView = transitionContext.view(forKey: .from),
+            guard let fromView = transitionContext.view(forKey: .from),
                 let toView = transitionContext.view(forKey: .to)
                 else {
                     fatalError()
@@ -74,15 +64,10 @@ class SwipeToSlideTransitionAnimation: NSObject, UIViewControllerAnimatedTransit
             
             let interruptibleAnimator = createInterruptibleAnimator(
                 goingFrom: fromView, to: toView, using: transitionContext)
-            
             self.interruptibleAnimator = interruptibleAnimator
-            
             return interruptibleAnimator
         }
-        
     }
-    
-    
     
     private func createInterruptibleAnimator(goingFrom fromView: UIView,
                                              to toView: UIView,
@@ -112,13 +97,9 @@ class SwipeToSlideTransitionAnimation: NSObject, UIViewControllerAnimatedTransit
     private func createAnimationPositions(using transitionContext: UIViewControllerContextTransitioning) -> InteractiveTransitioningContainerAnimationPositions {
         
         guard let fromViewController = transitionContext.viewController(forKey: .from),
-            let toViewController = transitionContext.viewController(forKey: .to),
-            let fromView = transitionContext.view(forKey: .from),
-            let toView = transitionContext.view(forKey: .to)
+            let toViewController = transitionContext.viewController(forKey: .to)
             else {
-                
                 let containerFrame = transitionContext.containerView.frame
-                
                 return InteractiveTransitioningContainerAnimationPositionsImpl(
                     fromInitialFrame: containerFrame, fromFinalFrame: containerFrame,
                     toInitialFrame: containerFrame, toFinalFrame: containerFrame)
@@ -132,45 +113,37 @@ class SwipeToSlideTransitionAnimation: NSObject, UIViewControllerAnimatedTransit
         return InteractiveTransitioningContainerAnimationPositionsImpl(
             fromInitialFrame: fromViewInitialFrame, fromFinalFrame: fromViewFinalFrame,
             toInitialFrame: toViewInitialFrame, toFinalFrame: toViewFinalFrame)
-        
     }
     
     private func setupInitialState(from fromView: UIView,
                                    to toView: UIView,
                                    in containerView: UIView,
                                    positionedBy animationPositions: InteractiveTransitioningContainerAnimationPositions) {
-        
         fromView.frame = animationPositions.fromInitialFrame
         toView.frame = animationPositions.toInitialFrame
         
         containerView.addSubview(toView)
-        
     }
     
     private func setupFinalState(from fromView: UIView,
                                  to toView: UIView,
                                  in containerView: UIView,
                                  positionedBy animationPositions: InteractiveTransitioningContainerAnimationPositions) {
-        
         fromView.frame = animationPositions.fromFinalFrame
         toView.frame = animationPositions.toFinalFrame
-        
     }
     
     private func completeAnimation(from fromView: UIView,
                                    to toView: UIView,
                                    positionedBy animationPositions: InteractiveTransitioningContainerAnimationPositions,
                                    using transitionContext: UIViewControllerContextTransitioning) {
-        
         if transitionContext.transitionWasCancelled {
             toView.removeFromSuperview()
             fromView.frame = animationPositions.fromInitialFrame
         } else {
             fromView.removeFromSuperview()
         }
-        
         self.interruptibleAnimator = nil
-        
         transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
     }
 }

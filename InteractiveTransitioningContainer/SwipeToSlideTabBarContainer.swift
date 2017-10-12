@@ -24,7 +24,7 @@ public protocol SwipeToSlideTabBarContainerDelegate: class {
     
 }
 
-public class SwipeToSlideTabBarContainer: UIViewController {
+open class SwipeToSlideTabBarContainer: UIViewController {
     
     fileprivate let tabBarChildControllers: [SwipeToSlideTabBarChildController]
     
@@ -57,7 +57,7 @@ public class SwipeToSlideTabBarContainer: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override public func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         
         layoutComponents()
@@ -76,7 +76,6 @@ public class SwipeToSlideTabBarContainer: UIViewController {
     }
     
     fileprivate func applyConstraints() {
-        
         tabBarViewController.view!.translatesAutoresizingMaskIntoConstraints = false
         containerViewController.view!.translatesAutoresizingMaskIntoConstraints = false
         
@@ -91,7 +90,7 @@ public class SwipeToSlideTabBarContainer: UIViewController {
         let tabBarView = tabBarViewController.view!
         let containerView = containerViewController.view!
         NSLayoutConstraint.activate([
-            tabBarView.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor),
+            tabBarView.topAnchor.constraint(equalTo: self.view.topAnchor),
             tabBarView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
             tabBarView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
             
@@ -99,7 +98,7 @@ public class SwipeToSlideTabBarContainer: UIViewController {
             
             containerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
             containerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-            containerView.bottomAnchor.constraint(equalTo: self.bottomLayoutGuide.topAnchor)
+            containerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
             ])
     }
     
@@ -107,7 +106,7 @@ public class SwipeToSlideTabBarContainer: UIViewController {
         let tabBarView = tabBarViewController.view!
         let containerView = containerViewController.view!
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor),
+            containerView.topAnchor.constraint(equalTo: self.view.topAnchor),
             containerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
             containerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
             
@@ -115,8 +114,21 @@ public class SwipeToSlideTabBarContainer: UIViewController {
             
             tabBarView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
             tabBarView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-            tabBarView.bottomAnchor.constraint(equalTo: self.bottomLayoutGuide.topAnchor)
+            tabBarView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
             ])
+    }
+    
+    // MARK: status bar overrides
+    override open var prefersStatusBarHidden: Bool {
+        return self.containerViewController.prefersStatusBarHidden
+    }
+    
+    override open var preferredStatusBarStyle: UIStatusBarStyle {
+        return self.containerViewController.preferredStatusBarStyle
+    }
+    
+    override open var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return self.containerViewController.preferredStatusBarUpdateAnimation
     }
 }
 
@@ -134,20 +146,5 @@ extension SwipeToSlideTabBarContainer: SwipeToSlideInteractiveTransitioningConta
         willTransitionFromIndex fromIndex: Int, to toIndex: Int,
         coordinatedBy transitionCoordinator: UIViewControllerTransitionCoordinator) {
         delegate?.swipeToSlideTabBarContainer(self, willTransitionFromIndex: fromIndex, to: toIndex, coordinatedBy: transitionCoordinator)
-    }
-}
-
-// MARK: status bar overrides
-extension SwipeToSlideTabBarContainer {
-    override public var prefersStatusBarHidden: Bool {
-        return self.containerViewController.prefersStatusBarHidden
-    }
-    
-    override public var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.containerViewController.preferredStatusBarStyle
-    }
-    
-    override public var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
-        return self.containerViewController.preferredStatusBarUpdateAnimation
     }
 }

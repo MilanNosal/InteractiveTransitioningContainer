@@ -18,12 +18,10 @@ import UIKit
 // - http://www.iosnomad.com/blog/2014/5/12/interactive-custom-container-view-controller-transitions
 public class InteractiveTransitionContainerLayerBasedPercentDrivenInteractiveTransition: InteractiveTransitionContainerPercentDrivenInteractiveTransition {
     
-    override var percentComplete: CGFloat {
+    open override var percentComplete: CGFloat {
         didSet {
-            
             let offset = TimeInterval(percentComplete * duration)
             self.timeOffset = offset
-            
         }
     }
     
@@ -39,52 +37,42 @@ public class InteractiveTransitionContainerLayerBasedPercentDrivenInteractiveTra
     
     fileprivate var displayLink: CADisplayLink?
 
-    public override func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
-        
+    open override func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
         guard state == .isInactive else {
             return
         }
         
         super.startInteractiveTransition(transitionContext)
-        
         transitionContext.containerView.layer.speed = 0
-        
         self.animator!.animateTransition(using: transitionContext)
     }
     
-    public override func cancelInteractiveTransition() {
-        
+    open override func cancelInteractiveTransition() {
         guard state == .isInteracting else {
             return
         }
         
         super.cancelInteractiveTransition()
-        
         self.completeTransition()
     }
     
-    public override func finishInteractiveTransition() {
-        
+    open override func finishInteractiveTransition() {
         guard state == .isInteracting else {
             return
         }
         
         super.finishInteractiveTransition()
-        
         self.completeTransition()
     }
 
     // MARK: Internal methods
 
     fileprivate func completeTransition() {
-        
         displayLink = CADisplayLink(target: self, selector: #selector(InteractiveTransitionContainerLayerBasedPercentDrivenInteractiveTransition.tickAnimation))
         displayLink!.add(to: RunLoop.main, forMode: .commonModes)
-        
     }
     
     @objc fileprivate func tickAnimation() {
-        
         var timeOffset = self.timeOffset
         let tick = displayLink!.duration * CFTimeInterval(self.completionSpeed)
         timeOffset = timeOffset + (transitionContext!.transitionWasCancelled ? -tick : tick)
@@ -97,24 +85,18 @@ public class InteractiveTransitionContainerLayerBasedPercentDrivenInteractiveTra
     }
     
     fileprivate func transitionFinished() {
-        
         displayLink!.invalidate()
         
         let layer = transitionContext!.containerView.layer
         layer.speed = 1
         
         if transitionContext!.transitionWasCancelled {
-            
             // TODO: Test for glitch
-            
         } else {
-            
             layer.timeOffset = 0
             layer.beginTime = 0
-            
         }
         
         super.interactiveTransitionCompleted()
-        
     }
 }

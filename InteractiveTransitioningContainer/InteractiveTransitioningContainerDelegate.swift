@@ -67,9 +67,7 @@ extension InteractiveTransitioningContainerDelegate {
     public func interactiveTransitioningContainer(
         _ interactiveTransitioningContainer: InteractiveTransitioningContainer,
         layoutIfNotAlready viewController: UIViewController, inContainerView containerView: UIView) {
-        
         viewController.view.frame = containerView.bounds
-        
     }
     
     /// Empty default implementation

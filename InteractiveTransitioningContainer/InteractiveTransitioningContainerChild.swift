@@ -9,17 +9,11 @@
 import UIKit
 
 public protocol InteractiveTransitioningContainerChild {
-    
     weak var containerTransitionCoordinator: UIViewControllerTransitionCoordinator? { get }
-    
 }
 
 extension UIViewController: InteractiveTransitioningContainerChild {
-    
     public var containerTransitionCoordinator: UIViewControllerTransitionCoordinator? {
-        
         return self.parent?.transitionCoordinator
-        
     }
-    
 }

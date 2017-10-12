@@ -126,33 +126,24 @@ extension InteractiveTransitioningContainerTransitionCoordinator {
     public func animate(alongsideTransition animation: ((UIViewControllerTransitionCoordinatorContext) -> Swift.Void)?, completion: ((UIViewControllerTransitionCoordinatorContext) -> Swift.Void)? = nil) -> Bool {
         
         let addedAnimation = add(alongsideAnimation: animation)
-        
         let addedCompletionBlock = add(completionBlock: completion)
-        
         return addedAnimation || addedCompletionBlock
     }
     
     public func animateAlongsideTransition(in view: UIView?, animation: ((UIViewControllerTransitionCoordinatorContext) -> Swift.Void)?, completion: ((UIViewControllerTransitionCoordinatorContext) -> Swift.Void)? = nil) -> Bool {
         
         let addedNonContaineeView = add(viewForAnimation: view)
-        
         let addedAnimation = add(alongsideAnimation: animation)
-        
         let addedCompletionBlock = add(completionBlock: completion)
-        
         return addedNonContaineeView || addedAnimation || addedCompletionBlock
     }
     
     public func notifyWhenInteractionEnds(_ handler: @escaping (UIViewControllerTransitionCoordinatorContext) -> Swift.Void) {
-        
         endNotificationCallbacks.append(handler)
-        
     }
     
     public func notifyWhenInteractionChanges(_ handler: @escaping (UIViewControllerTransitionCoordinatorContext) -> Swift.Void) {
-        
         changeNotificationCallbacks.append(handler)
-        
     }
     
 }
@@ -160,7 +151,6 @@ extension InteractiveTransitioningContainerTransitionCoordinator {
 extension InteractiveTransitioningContainerTransitionCoordinator {
     
     fileprivate func add(viewForAnimation: UIView?) -> Bool {
-        
         if let view = viewForAnimation {
             nonContaineeAnimatedViews.append(view)
             return true
@@ -170,7 +160,6 @@ extension InteractiveTransitioningContainerTransitionCoordinator {
     }
     
     fileprivate func add(alongsideAnimation: CoordinatorCallback?) -> Bool {
-        
         if let animation = alongsideAnimation {
             animations.append(animation)
             return true
@@ -180,7 +169,6 @@ extension InteractiveTransitioningContainerTransitionCoordinator {
     }
     
     fileprivate func add(completionBlock: CoordinatorCallback?) -> Bool {
-        
         if let completion = completionBlock {
             completionCallbacks.append(completion)
             return true

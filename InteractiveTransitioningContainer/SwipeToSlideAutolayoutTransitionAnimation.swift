@@ -45,53 +45,36 @@ class SwipeToSlideAutolayoutTransitionAnimation: NSObject, UIViewControllerAnima
         toView.transform = CGAffineTransform(translationX: toViewInitialFrame.origin.x, y: 0)
         containerView.addSubview(toView)
         
-        
         UIView.animate(withDuration: self.transitionDuration(using: transitionContext), delay: 0, options: .curveLinear, animations: {
-            
             fromView.transform = CGAffineTransform(translationX: fromViewFinalFrame.origin.x, y: 0)
             toView.transform = CGAffineTransform.identity
-            
         }, completion: {
             (completed) -> Void in
-            
             if transitionContext.transitionWasCancelled {
-                
                 toView.removeFromSuperview()
                 toView.transform = CGAffineTransform.identity
                 
                 fromView.frame = fromViewInitialFrame
                 fromView.transform = CGAffineTransform.identity
-                
             } else {
-                
                 toView.frame = fromViewInitialFrame
                 toView.transform = CGAffineTransform.identity
                 
                 fromView.removeFromSuperview()
                 fromView.transform = CGAffineTransform.identity
-                
             }
-            
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
-            
         })
     }
     
     func interruptibleAnimator(using transitionContext: UIViewControllerContextTransitioning) -> UIViewImplicitlyAnimating {
-        
         if let interruptibleAnimator = self.interruptibleAnimator {
-            
             return interruptibleAnimator
-            
         } else {
-            
             let interruptibleAnimator = createInterruptibleAnimator(using: transitionContext)
-            
             self.interruptibleAnimator = interruptibleAnimator
-            
             return interruptibleAnimator
         }
-        
     }
 
     private func createInterruptibleAnimator(using transitionContext: UIViewControllerContextTransitioning) -> UIViewImplicitlyAnimating {
@@ -119,37 +102,27 @@ class SwipeToSlideAutolayoutTransitionAnimation: NSObject, UIViewControllerAnima
         let propertyAnimator = UIViewPropertyAnimator(duration: duration, timingParameters: timingParameters)
         
         propertyAnimator.addAnimations {
-            
             fromView.transform = CGAffineTransform(translationX: fromViewFinalFrame.origin.x, y: 0)
             toView.transform = CGAffineTransform.identity
-            
         }
         
         propertyAnimator.addCompletion { (animatingPosition) in
-            
             if transitionContext.transitionWasCancelled {
-                
                 toView.removeFromSuperview()
                 toView.transform = CGAffineTransform.identity
                 
                 fromView.frame = fromViewInitialFrame
                 fromView.transform = CGAffineTransform.identity
-                
             } else {
-                
                 toView.frame = fromViewInitialFrame
                 toView.transform = CGAffineTransform.identity
                 
                 fromView.removeFromSuperview()
                 fromView.transform = CGAffineTransform.identity
-                
             }
-            
             self.interruptibleAnimator = nil
-            
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         }
-        
         return propertyAnimator
     }
 }
