@@ -43,6 +43,8 @@ open class SwipeToSlideInteractiveTransitioningContainer: InteractiveTransitioni
     // MARK: Instance fields
     let viewControllers: [UIViewController]
     
+    public var interactive: Bool = true
+    
     public init(with viewControllers: [UIViewController]) {
         guard viewControllers.count > 0 else {
             fatalError("SwipeToSlideInteractiveTransitioningContainerDelegate has to be initiated with at least one viewController.")
@@ -69,7 +71,7 @@ open class SwipeToSlideInteractiveTransitioningContainer: InteractiveTransitioni
     func interactionControllerFactory(in view: UIView) -> SwipeToSlidePanGestureInteractiveTransition {
         return SwipeToSlidePanGestureInteractiveTransition(in: view) {
             [weak weakself = self] (panGestureRecognizer) in
-            guard let wself = weakself, let selected = wself.selectedViewController else {
+            guard let wself = weakself, let selected = wself.selectedViewController, wself.interactive else {
                 return
             }
             
@@ -81,6 +83,36 @@ open class SwipeToSlideInteractiveTransitioningContainer: InteractiveTransitioni
                 wself.transition(to: wself.viewControllers[currentIndex + 1], interactive: true)
             }
         }
+    }
+    
+    public var currentIndex: Int {
+        get {
+            return viewControllers.index(of: selectedViewController)!
+        }
+    }
+    
+    open func showNext(animated: Bool) -> Bool {
+        if currentIndex >= viewControllers.count - 1 {
+            return false
+        }
+        let vc = viewControllers[currentIndex + 1]
+        self.transition(to: vc, animated: animated, interactive: false)
+        return true
+    }
+    
+    open func showPrevious(animated: Bool) -> Bool {
+        if currentIndex <= 0 {
+            return false
+        }
+        let vc = viewControllers[currentIndex - 1]
+        self.transition(to: vc, animated: animated, interactive: false)
+        return true
+    }
+    
+    open func show(at index: Int, animated: Bool) {
+        guard index < viewControllers.count else { fatalError("Index out of bounds for viewControllers.") }
+        let vc = viewControllers[index]
+        self.transition(to: vc, animated: animated, interactive: false)
     }
     
     // MARK: InteractiveTransitioningContainerDelegate
