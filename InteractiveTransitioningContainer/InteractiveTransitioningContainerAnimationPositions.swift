@@ -30,6 +30,13 @@ public struct InteractiveTransitioningContainerAnimationPositionsImpl: Interacti
     
     public var toFinalFrame: CGRect
     
+    public init(fromInitialFrame: CGRect, fromFinalFrame: CGRect, toInitialFrame: CGRect, toFinalFrame: CGRect) {
+        self.fromInitialFrame = fromInitialFrame
+        self.fromFinalFrame = fromFinalFrame
+        self.toInitialFrame = toInitialFrame
+        self.toFinalFrame = toFinalFrame
+    }
+    
     public var description: String {
         return "Old going from (\(fromInitialFrame)) to (\(fromFinalFrame))\nNew going from (\(toInitialFrame)) to (\(toFinalFrame))"
     }
