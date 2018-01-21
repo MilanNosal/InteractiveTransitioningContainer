@@ -8,7 +8,7 @@
 
 import Foundation
 
-class SwipeToSlidePanGestureInteractiveTransition: InteractiveTransitionContainerAnimatorBasedPercentDrivenInteractiveTransition {
+public class SwipeToSlidePanGestureInteractiveTransition: InteractiveTransitionContainerAnimatorBasedPercentDrivenInteractiveTransition {
     
     private let progressNeeded: CGFloat
     
@@ -16,7 +16,7 @@ class SwipeToSlidePanGestureInteractiveTransition: InteractiveTransitionContaine
     
     private var lastVelocity = CGPoint.zero
     
-    let gestureRecognizer: UIPanGestureRecognizer = UIPanGestureRecognizer()
+    public let gestureRecognizer: UIPanGestureRecognizer = UIPanGestureRecognizer()
     
     private var leftToRightTransition = false
     
@@ -25,7 +25,7 @@ class SwipeToSlidePanGestureInteractiveTransition: InteractiveTransitionContaine
     // This block gets run when the gesture recognizer start recognizing a pan. Inside, the start of a transition can be triggered.
     private let gestureRecognizedBlock: ((_ recognizer: UIPanGestureRecognizer) -> Void)
     
-    init(in view: UIView, progressThreshold: CGFloat = 0.35, velocityOverrideThreshold: CGFloat = 550, recognizedBlock: @escaping ((_ recognizer: UIPanGestureRecognizer) -> Void)) {
+    public init(in view: UIView, progressThreshold: CGFloat = 0.35, velocityOverrideThreshold: CGFloat = 550, recognizedBlock: @escaping ((_ recognizer: UIPanGestureRecognizer) -> Void)) {
         
         self.progressNeeded = progressThreshold
         self.velocityNeeded = velocityOverrideThreshold
@@ -38,7 +38,7 @@ class SwipeToSlidePanGestureInteractiveTransition: InteractiveTransitionContaine
         
     }
     
-    override func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
+    public override func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
         
         super.startInteractiveTransition(transitionContext)
         self.leftToRightTransition = gestureRecognizer.velocity(in: gestureRecognizer.view).x > 0

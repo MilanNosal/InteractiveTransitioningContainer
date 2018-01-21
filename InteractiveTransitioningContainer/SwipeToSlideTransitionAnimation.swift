@@ -8,22 +8,22 @@
 
 import UIKit
 
-class SwipeToSlideTransitionAnimation: NSObject, UIViewControllerAnimatedTransitioning {
+public class SwipeToSlideTransitionAnimation: NSObject, UIViewControllerAnimatedTransitioning {
     
     private let duration: TimeInterval
     
     private var interruptibleAnimator: UIViewImplicitlyAnimating?
     
-    init(duration: TimeInterval = 0.2) {
+    public init(duration: TimeInterval = 0.2) {
         self.duration = duration
         super.init()
     }
     
-    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+    public func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return duration
     }
     
-    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+    public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         guard let fromView = transitionContext.view(forKey: .from),
             let toView = transitionContext.view(forKey: .to)
             else {
@@ -51,7 +51,7 @@ class SwipeToSlideTransitionAnimation: NSObject, UIViewControllerAnimatedTransit
     /// We rely on the implementation to return the same interruptible animator during the
     /// duration of the transition - please, keep that in mind when implementing your own
     /// animators for usage with our InteractiveTransitioningContainer
-    func interruptibleAnimator(using transitionContext: UIViewControllerContextTransitioning) -> UIViewImplicitlyAnimating {
+    public func interruptibleAnimator(using transitionContext: UIViewControllerContextTransitioning) -> UIViewImplicitlyAnimating {
         
         if let interruptibleAnimator = self.interruptibleAnimator {
             return interruptibleAnimator
@@ -81,12 +81,12 @@ class SwipeToSlideTransitionAnimation: NSObject, UIViewControllerAnimatedTransit
         let timingParameters = UICubicTimingParameters(animationCurve: .linear)
         let propertyAnimator = UIViewPropertyAnimator(duration: duration, timingParameters: timingParameters)
         
-        propertyAnimator.addAnimations {
+        propertyAnimator.addAnimations { [unowned self] in
             self.setupFinalState(
                 from: fromView, to: toView, in: transitionContext.containerView, positionedBy: animationPositions)
         }
         
-        propertyAnimator.addCompletion { (animatingPosition) in
+        propertyAnimator.addCompletion { [unowned self] (animatingPosition) in
             self.completeAnimation(
                 from: fromView, to: toView, positionedBy: animationPositions, using: transitionContext)
         }
