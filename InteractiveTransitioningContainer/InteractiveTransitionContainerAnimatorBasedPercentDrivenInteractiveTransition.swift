@@ -58,10 +58,33 @@ public class InteractiveTransitionContainerAnimatorBasedPercentDrivenInteractive
         }
         
         super.finishInteractiveTransition()
-    
+        
         self.interruptibleAnimator!.continueAnimation!(
             withTimingParameters: nil,
             durationFactor: (1 - self.interruptibleAnimator!.fractionComplete))
+    }
+    
+    open func immediatellyFinishInteractiveTransition() {
+        guard state == .isInteracting else {
+            return
+        }
+        
+        super.finishInteractiveTransition()
+        
+        self.interruptibleAnimator?.stopAnimation(false)
+        self.interruptibleAnimator?.finishAnimation(at: .end)
+    }
+    
+    open func immediatellyCancelInteractiveTransition() {
+        guard state == .isInteracting else {
+            return
+        }
+        
+        super.cancelInteractiveTransition()
+        
+        self.interruptibleAnimator?.isReversed = true
+        self.interruptibleAnimator?.stopAnimation(false)
+        self.interruptibleAnimator?.finishAnimation(at: .end)
     }
 
     // MARK: - Internal methods
