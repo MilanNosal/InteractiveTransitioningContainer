@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'InteractiveTransitioningContainer'
-  s.version          = '0.1.4'
+  s.version          = '0.1.5'
   s.summary          = 'A UIKit custom container component that supports interactive transitions for switching between its containees.'
  
   s.description      = <<-DESC
